@@ -1,5 +1,5 @@
 --- 
-title: "Final Project Proposal"
+title: "Final Project Proposal Test"
 author: "Vivian Liu"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
