@@ -1,1 +1,72 @@
 # [Model 1]
+
+```{r}
+taxi_data <- read.csv('~/Desktop/2021_taxi_data.csv')
+head(taxi_data)
+```
+My goal is to look into the factors that determine how people tip. To do this, I want to create a "tipped" column that is just a binary of whether or not somebody tipped at all. I also want to create a "tip" column that shows whether or not somebody tipped over 15% of the fare amount. 
+
+```{r}
+# create tip column
+tipped <- ifelse(taxi_data$tip_amount == 0, 0, 1)
+taxi_data$tipped <- tipped
+mean(!taxi_data$tipped)
+
+taxi_data <- taxi_data[taxi_data$fare_amount != 0, ]
+dim(taxi_data)
+
+tip <- ifelse(taxi_data$tip_amount / taxi_data$fare_amount < 0.15, 0, 1)
+taxi_data$tip <- tip
+mean(!taxi_data$tip)
+# of the sampled data, 35.2% of rides were tipped under 15%.
+```
+As we can see, of the sampled data, 27% of rides were NOT tipped and 35.2% of rides were tipped under 15% (including not tipped at all). Next, I want to get a general sense of the distribution of tip amounts and the distribution of fare amounts. 
+
+```{r}
+hist(taxi_data$tip_amount, main="Tip Amount", xlab="tip", breaks=20)
+```
+We see a spike at 0 representing the proportion of rides that weren't tipped at all. Generally, we see that most rides are tipped between the $0-5 range. 
+
+```{r}
+hist(taxi_data$fare_amount, main="Fare Amount", xlab="fare", breaks=20)
+negative <- taxi_data[taxi_data$fare_amount < 0, ]
+negative
+```
+This is odd- there seem to be some rides where the fare amount is negative (the taxi driver owes the passenger the fare amount). I did some research and attributed this to messy data, so I removed the negative fares and redid the histogram. 
+
+```{r}
+taxi_data <- taxi_data[taxi_data$fare_amount >= 0, ]
+hist(taxi_data$fare_amount, main="Fare Amount", xlab="fare", breaks=40)
+```
+We see that most fares seem to be around $5-20.
+
+Next, I want to create a categorical variable for the season in which the ride took place. 
+
+```{r}
+taxi_data$pickup <- as.POSIXct(taxi_data$tpep_pickup_datetime, format = "%m/%d/%Y %H:%M:%S %p")
+taxi_data$dropoff <- as.POSIXct(taxi_data$tpep_dropoff_datetime, format = "%m/%d/%Y %H:%M:%S %p")
+
+duration <- difftime(taxi_data$dropoff, taxi_data$pickup,)
+duration
+```
+
+```{r}
+set.seed(5293)
+n <- nrow(taxi_data)
+train <- sample(n, .8*n)
+train_dat <- taxi_data[train, ]
+head(train_dat)
+```
+
+
+```{r}
+library(rpart)
+library(rpart.plot)
+
+mod1 <- rpart(tip ~ passenger_count, data = train_dat, 
+              method="class", 
+              control=rpart.control(cp=0))
+rpart.plot(mod1, main = "tip", under=TRUE)
+```
+
+
