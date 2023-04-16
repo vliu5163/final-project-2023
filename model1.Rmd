@@ -37,17 +37,71 @@ This is odd- there seem to be some rides where the fare amount is negative (the 
 ```{r}
 taxi_data <- taxi_data[taxi_data$fare_amount >= 0, ]
 hist(taxi_data$fare_amount, main="Fare Amount", xlab="fare", breaks=40)
+# for random forest, you need strings as factors (read it in as "string as factor" when reading the CSV)
+# this is a problem because random forest will do REGRESSION instead of CLASSIFICATION
+# stringsAsFactors = TRUE
 ```
 We see that most fares seem to be around $5-20.
 
-Next, I want to create a categorical variable for the season in which the ride took place. 
+Next, I want to see how long these rides last. To do that, I need to first convert the pickup/dropoff times to time variables, and find the difference. 
 
 ```{r}
-taxi_data$pickup <- as.POSIXct(taxi_data$tpep_pickup_datetime, format = "%m/%d/%Y %H:%M:%S %p")
-taxi_data$dropoff <- as.POSIXct(taxi_data$tpep_dropoff_datetime, format = "%m/%d/%Y %H:%M:%S %p")
+taxi_data$pickup <- as.POSIXct(taxi_data$tpep_pickup_datetime, format = "%m/%d/%Y %I:%M:%S %p")
+taxi_data$dropoff <- as.POSIXct(taxi_data$tpep_dropoff_datetime, format = "%m/%d/%Y %I:%M:%S %p")
 
-duration <- difftime(taxi_data$dropoff, taxi_data$pickup,)
-duration
+# minutes was the most reasonable unit of measurement for ride duration
+duration <- difftime(taxi_data$dropoff, taxi_data$pickup, units = 'mins')
+taxi_data$duration <- duration
+
+taxi_data <- taxi_data[taxi_data$duration < 120, ]
+```
+
+In my exploration of the data, there were some values that seemed like outliars (rides that took multiple hours). I removed 11 of these rows from the data set. 
+
+Next, I want to create a categorical variable for the season in which the ride took place based on the pickup time. To do this, I will looked into this package: hydroTSM. Maybe the season in which the ride took place will impact the amount riders tip!
+
+```{r}
+library("hydroTSM")
+season <- time2season(taxi_data$pickup, out.fmt = "seasons")
+taxi_data$season <- season
+
+```
+
+Finally, I would like to create a categorical variable that takes into account the pickup and dropoff locations. I don't want it to be too granular, so I'm using the "pulocationID" and "dolocationID" columns. Just looking at the numbers, they don't mean anything so I looked into what the IDs mean. I found this dataset: https://catalog.data.gov/dataset/nyc-taxi-zones and named it pickup_ids in my code. I cross-referenced the "borough" column of pickup_ids to figure out the borough each pickup ID corresponds to. 
+
+```{r}
+zone_ids <- read.csv('~/Desktop/taxi_zones.csv')
+zone_ids
+
+pickup_borough <- c()
+dropoff_borough <- c()
+
+for (i in c(1, 10)) { # nrow(taxi_data)) {
+  pickup_id <- taxi_data$PULocationID[i]
+  print(pickup_id)
+  dropoff_id <- taxi_data$DOLocationID[i]
+  print(dropoff_id)
+  
+  pu_id <- zone_ids[zone_ids$LocationID == pickup_id, ]
+  pu_borough <- pu_id$borough
+  print(pu_borough)
+  pickup_borough[i] <- pu_borough
+  
+  do_id <- zone_ids[zone_ids$LocationID == dropoff_id, ]
+  do_borough <- do_id$borough
+  print(do_borough)
+  dropoff_borough[i] <- do_borough
+}
+
+pickup_borough[1:10]
+dropoff_borough[1:10]
+
+```
+
+At this point in my iterations, I've created all the new categorical variables I'd like to create for my data analysis. Time to split into train and test data!
+
+```{r}
+
 ```
 
 ```{r}
