@@ -25,4 +25,12 @@ Shapley is a permutation method, looks at all combinations of features (costly i
 Fit linear model for SHAP by minimizing the loss function
 
 
+# Sources
+
+https://catalog.data.gov/dataset/nyc-taxi-zones
+https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf
+https://cran.r-project.org/web/packages/hydroTSM/index.html
+
+
+
 

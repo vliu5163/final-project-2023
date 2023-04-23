@@ -1,0 +1,137 @@
+# [Exploration]
+
+```{r}
+taxi_data <- read.csv('~/Desktop/2021_taxi_data.csv')
+head(taxi_data)
+```
+My goal is to look into the factors that determine how people tip. To do this, I want to create a "tipped" column that is just a binary of whether or not somebody tipped at all. I also want to create a "tip" column that shows whether or not somebody tipped over 15% of the fare amount. 
+
+```{r}
+# create tip column
+tipped <- ifelse(taxi_data$tip_amount == 0, 0, 1)
+taxi_data$tipped <- tipped
+mean(!taxi_data$tipped)
+
+taxi_data <- taxi_data[taxi_data$fare_amount != 0, ]
+dim(taxi_data)
+
+tip <- ifelse(taxi_data$tip_amount / taxi_data$fare_amount < 0.15, 0, 1)
+taxi_data$tip <- tip
+mean(!taxi_data$tip)
+# of the sampled data, 35.2% of rides were tipped under 15%.
+```
+
+As we can see, of the sampled data, 27% of rides were NOT tipped and 35.2% of rides were tipped under 15% (including not tipped at all). Next, I want to get a general sense of the distribution of tip amounts and the distribution of fare amounts. 
+
+```{r}
+hist(taxi_data$tip_amount, main="Tip Amount", xlab="tip", breaks=20)
+```
+We see a spike at 0 representing the proportion of rides that weren't tipped at all. Generally, we see that most rides are tipped between the $0-5 range. 
+
+```{r}
+hist(taxi_data$tip_amount / taxi_data$fare_amount, main="Tip Percentage", xlab="tip", xlim = c(0, 1), breaks=100)
+```
+
+We see a spike at 0 representing the proportion of rides that aren't tipped at all. We also see a spike around 25-30% tip. 
+
+```{r}
+hist(taxi_data$fare_amount, main="Fare Amount", xlab="fare", breaks=20)
+negative <- taxi_data[taxi_data$fare_amount < 0, ]
+negative
+```
+This is odd- there seem to be some rides where the fare amount is negative (the taxi driver owes the passenger the fare amount). I did some research and attributed this to messy data, so I removed the negative fares and redid the histogram. 
+
+```{r}
+taxi_data <- taxi_data[taxi_data$fare_amount >= 0, ]
+hist(taxi_data$fare_amount, main="Fare Amount", xlab="fare", breaks=40)
+# for random forest, you need strings as factors (read it in as "string as factor" when reading the CSV)
+# this is a problem because random forest will do REGRESSION instead of CLASSIFICATION
+# stringsAsFactors = TRUE
+```
+We see that most fares seem to be around $5-20.
+
+Next, I want to see how long these rides last. To do that, I need to first convert the pickup/dropoff times to time variables, and find the difference. 
+
+```{r}
+taxi_data$pickup <- as.POSIXct(taxi_data$tpep_pickup_datetime, format = "%m/%d/%Y %I:%M:%S %p")
+taxi_data$dropoff <- as.POSIXct(taxi_data$tpep_dropoff_datetime, format = "%m/%d/%Y %I:%M:%S %p")
+
+# minutes was the most reasonable unit of measurement for ride duration
+duration <- difftime(taxi_data$dropoff, taxi_data$pickup, units = 'mins')
+taxi_data$duration <- duration
+
+taxi_data <- taxi_data[taxi_data$duration < 120, ]
+```
+
+In my exploration of the data, there were some values that seemed like outliars (rides that took multiple hours). I removed 11 of these rows from the data set. 
+
+Next, I want to create a categorical variable for the season in which the ride took place based on the pickup time. To do this, I will looked into this package: hydroTSM. Maybe the season in which the ride took place will impact the amount riders tip!
+
+```{r}
+library("hydroTSM")
+season <- time2season(taxi_data$pickup, out.fmt = "seasons")
+taxi_data$season <- season
+
+```
+
+Finally, I would like to create a categorical variable that takes into account the pickup and dropoff locations. I don't want it to be too granular, so I'm using the "pulocationID" and "dolocationID" columns. Just looking at the numbers, they don't mean anything so I looked into what the IDs mean. I found this dataset: https://catalog.data.gov/dataset/nyc-taxi-zones and named it pickup_ids in my code. I cross-referenced the "borough" column of pickup_ids to figure out the borough each pickup ID corresponds to. 
+
+This link was also helpful. https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf
+
+```{r}
+zone_ids <- read.csv('~/Desktop/taxi_zones.csv')
+# zone_ids
+
+pickup_borough <- c()
+dropoff_borough <- c()
+
+for (i in 1:nrow(taxi_data)) {
+  pickup_id <- taxi_data$PULocationID[i]
+  dropoff_id <- taxi_data$DOLocationID[i]
+  
+  pu_id <- zone_ids[zone_ids$LocationID == pickup_id, ]
+  pu_id
+  pu_borough <- pu_id$borough
+  # print(pu_borough)
+  if (length(pu_borough) == 0) {
+    pickup_borough[i] <- "unknown"
+  }
+  else {
+    pickup_borough[i] <- pu_borough
+  }
+  
+  
+  do_id <- zone_ids[zone_ids$LocationID == dropoff_id, ]
+  do_borough <- do_id$borough
+  if (length(do_borough) == 0) {
+    dropoff_borough[i] <- "unknown"
+  }
+  else {
+    dropoff_borough[i] <- do_borough
+  }
+}
+
+table(pickup_borough)
+table(dropoff_borough)
+
+taxi_data$pickup_borough <- pickup_borough
+taxi_data$dropoff_borough <- dropoff_borough
+```
+
+```{r}
+taxi_data$passenger_count <- factor(taxi_data$passenger_count)
+table(passenger_count)
+ggplot(taxi_data, aes(x=passenger_count, y=tip_amount)) +
+  geom_boxplot() +
+  coord_flip()
+```
+
+At this point in my iterations, I've created all the new categorical variables I'd like to create for my data analysis. 
+
+```{r}
+write.csv(taxi_data, file='~/Desktop/2021_taxi_data_mod.csv')
+```
+
+
+
+
