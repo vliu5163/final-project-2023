@@ -23,4 +23,3 @@ Fit linear model for SHAP by minimizing the loss function
 https://catalog.data.gov/dataset/nyc-taxi-zones
 https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf
 https://cran.r-project.org/web/packages/hydroTSM/index.html
-https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf
