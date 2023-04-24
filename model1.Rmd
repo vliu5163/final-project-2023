@@ -6,6 +6,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r cars}
 taxi_data <- read.csv('~/Desktop/2021_taxi_data_mod.csv')
+
 ```
 
 Split into test and train:
@@ -15,18 +16,29 @@ set.seed(5293)
 n <- nrow(taxi_data)
 train <- sample(n, .8*n)
 train_dat <- taxi_data[train, ]
+# test_dat <- df[-train, ]
 head(train_dat)
 ```
 
-
-
-
+```{r}
+# my accuracy is really low when I run line 31. Line 32 doesn't work at all
+library(OneR)
+mod <- OneR(tip ~ pickup_borough + dropoff_borough + passenger_count + high_fare, data = train_dat)
+summary(mod)
+plot(mod)
+prediction <- predict(mod, train_dat)
+eval_model(prediction, train_dat)
+mean(predict(mod, train_dat) == train_dat$tip_amount)
+# mean(predict(mod, test_dat) == test_dat$tip_amount)
+```
+Based on the OneR analysis, it seems that pickup borough is the most important in determining whether or not a rider will tip over 15% on their ride. As we can see from the plot, there are 5 categories (Bronx, Brooklyn, Manhattan, Queens, and unknown borough). Riders who are picked up in Manhattan have the highest rate of tipping over 15%, and riders who are picked up from the Bronx have the lowest rate of tipping over 15%. This made sense intuitively when I looked up the median household income for the different boroughs after making this plot. Highest to lowest median income goes Manhattan, Staten Island, Queens, Brooklyn, then Bronx which is the same order for tipping >15% in this plot. 
 
 ```{r}
+# testing
 library(rpart)
 library(rpart.plot)
 
-mod1 <- rpart(tip ~ pickup_borough + dropoff_borough, data = train_dat, 
+mod1 <- rpart(tip ~ pickup_borough + dropoff_borough + season + high_fare, data = train_dat, 
               method="class", 
               control=rpart.control(cp=0))
 rpart.plot(mod1, main = "tip", under=TRUE)

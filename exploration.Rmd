@@ -7,6 +7,29 @@ head(taxi_data)
 My goal is to look into the factors that determine how people tip. To do this, I want to create a "tipped" column that is just a binary of whether or not somebody tipped at all. I also want to create a "tip" column that shows whether or not somebody tipped over 15% of the fare amount. 
 
 ```{r}
+# advice on what to do about the NAs?
+colSums(is.na(taxi_data))
+```
+To understand the columns and what the values mean, I used this site:
+https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf
+
+It seems that most columns don't have NAs. The ones that do are passenger_count, VendorID, RatecodeID, payment_type, and congestion_surcharge. 
+Passenger_count (231): ??
+VendorID (132): replace NA with 0 to represent unknown
+RatecodeID (231): ??
+payment_type (132): replace all NA with code 5 (unknown)
+congestion_surcharge (99): ??
+
+```{r}
+taxi_data["VendorID"][is.na(taxi_data["VendorID"])] <- 0
+taxi_data["payment_type"][is.na(taxi_data["payment_type"])] <- 5
+```
+
+```{r}
+colSums(is.na(taxi_data))
+```
+
+```{r}
 # create tip column
 tipped <- ifelse(taxi_data$tip_amount == 0, 0, 1)
 taxi_data$tipped <- tipped
@@ -48,7 +71,14 @@ hist(taxi_data$fare_amount, main="Fare Amount", xlab="fare", breaks=40)
 # this is a problem because random forest will do REGRESSION instead of CLASSIFICATION
 # stringsAsFactors = TRUE
 ```
-We see that most fares seem to be around $5-20.
+We see that most fares seem to be around \$5-20. I'd like to make a categorical variable for rides over and under \$20.
+
+```{r}
+taxi_data$high_fare <- ifelse(taxi_data$fare_amount < 20, 0, 1)
+mean(taxi_data$high_fare)
+```
+
+So around 16% of all rides are over $20.
 
 Next, I want to see how long these rides last. To do that, I need to first convert the pickup/dropoff times to time variables, and find the difference. 
 
@@ -63,7 +93,7 @@ taxi_data$duration <- duration
 taxi_data <- taxi_data[taxi_data$duration < 120, ]
 ```
 
-In my exploration of the data, there were some values that seemed like outliars (rides that took multiple hours). I removed 11 of these rows from the data set. 
+In my exploration of the data, there were some values that seemed like outliers (rides that took multiple hours). I removed 11 of these rows from the data set. 
 
 Next, I want to create a categorical variable for the season in which the ride took place based on the pickup time. To do this, I will looked into this package: hydroTSM. Maybe the season in which the ride took place will impact the amount riders tip!
 
@@ -71,7 +101,6 @@ Next, I want to create a categorical variable for the season in which the ride t
 library("hydroTSM")
 season <- time2season(taxi_data$pickup, out.fmt = "seasons")
 taxi_data$season <- season
-
 ```
 
 Finally, I would like to create a categorical variable that takes into account the pickup and dropoff locations. I don't want it to be too granular, so I'm using the "pulocationID" and "dolocationID" columns. Just looking at the numbers, they don't mean anything so I looked into what the IDs mean. I found this dataset: https://catalog.data.gov/dataset/nyc-taxi-zones and named it pickup_ids in my code. I cross-referenced the "borough" column of pickup_ids to figure out the borough each pickup ID corresponds to. 
@@ -118,12 +147,14 @@ taxi_data$pickup_borough <- pickup_borough
 taxi_data$dropoff_borough <- dropoff_borough
 ```
 
+
 ```{r}
 taxi_data$passenger_count <- factor(taxi_data$passenger_count)
 table(passenger_count)
 ggplot(taxi_data, aes(x=passenger_count, y=tip_amount)) +
   geom_boxplot() +
   coord_flip()
+
 ```
 
 At this point in my iterations, I've created all the new categorical variables I'd like to create for my data analysis. 
