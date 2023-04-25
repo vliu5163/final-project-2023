@@ -4,9 +4,15 @@
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r cars}
-taxi_data <- read.csv('~/Desktop/2021_taxi_data_mod.csv')
+```{r}
+library(OneR)
+library(ggplot2)
+library(forcats)
+library(dplyr)
+```
 
+```{r cars}
+taxi_data <- read.csv('data/2021_taxi_data_mod.csv')
 ```
 
 Split into test and train:
@@ -16,22 +22,37 @@ set.seed(5293)
 n <- nrow(taxi_data)
 train <- sample(n, .8*n)
 train_dat <- taxi_data[train, ]
-# test_dat <- df[-train, ]
+test_dat <- taxi_data[-train, ]
 head(train_dat)
 ```
 
 ```{r}
-# my accuracy is really low when I run line 31. Line 32 doesn't work at all
-library(OneR)
-mod <- OneR(tip ~ pickup_borough + dropoff_borough + passenger_count + high_fare, data = train_dat)
+# one thing to note- I struggled for a bit before realizing that I needed to make my tip column
+# into a factor with 2 levels: 0 and 1!
+mod <- OneR(factor(tip) ~ pickup_borough + dropoff_borough + passenger_count + high_fare, data = train_dat)
 summary(mod)
 plot(mod)
-prediction <- predict(mod, train_dat)
-eval_model(prediction, train_dat)
-mean(predict(mod, train_dat) == train_dat$tip_amount)
-# mean(predict(mod, test_dat) == test_dat$tip_amount)
+mean(predict(mod, train_dat) == train_dat$tip)
+mean(predict(mod, test_dat) == test_dat$tip)
 ```
-Based on the OneR analysis, it seems that pickup borough is the most important in determining whether or not a rider will tip over 15% on their ride. As we can see from the plot, there are 5 categories (Bronx, Brooklyn, Manhattan, Queens, and unknown borough). Riders who are picked up in Manhattan have the highest rate of tipping over 15%, and riders who are picked up from the Bronx have the lowest rate of tipping over 15%. This made sense intuitively when I looked up the median household income for the different boroughs after making this plot. Highest to lowest median income goes Manhattan, Staten Island, Queens, Brooklyn, then Bronx which is the same order for tipping >15% in this plot. 
+Interestingly, I have an accuracy of 66% for the training data, and an even higher accuracy of 66.7% for the test data. Compared to an overall frequency of 64.8% for tipped > 15%, this doesn't seem like that much of an information gain and the test accuracy being higher is a little odd. 
+
+Something interesting came up with the OneR function as I was running this. I noticed that for the Brooklyn column, OneR classified it as 1 when from my explorations, I knew that Brooklyn should have been classified as 0 since there were more instances of 0 than 1 in the data. 
+
+```{r}
+ggplot(train_dat, aes(fct_infreq(dropoff_borough), fill = factor(tip))) + geom_bar(position = "dodge") # contains rows with NAs
+```
+As we can see, the relative frequencies for Brooklyn were 88 for 0 and 86 for 1, which means that OneR should have classified Brooklyn as 0 instead of 1 as it did in the model. However, OneR said there were 60 instances of 0 and 76 instances of 1 in the data. Why were some of the data points missing?
+
+```{r}
+train_dat[complete.cases(train_dat),] |> group_by(dropoff_borough, factor(tip)) |> count() |> ggplot(aes(reorder(dropoff_borough, -n), n, fill = `factor(tip)`)) + geom_col(position="dodge")
+```
+
+Now that we've removed all the rows with NA, we see the same results that OneR showed in the summary. It turns out this was all because the OneR function has been tossing any rows with NAs in it. This was good to know, and maybe this should have been more clear in the documentation!
+
+Based on the OneR analysis, it seems that dropoff borough is the most important in determining whether or not a rider will tip over 15% on their ride, and it categorizes at 66.7% accuracy. However, we already know that 65% of all rides are classified as over 15% tip so we're not sure how much information we're gaining. As we can see from the plot, there are 5 categories (Bronx, Brooklyn, Manhattan, Queens, and unknown borough). Riders who are picked up in Manhattan have the highest rate of tipping over 15%, and riders who are picked up from the Bronx have the lowest rate of tipping over 15%. This made sense intuitively when I looked up the median household income for the different boroughs after making this plot. Highest to lowest median income goes Manhattan, Staten Island, Queens, Brooklyn, then Bronx which is the same order for tipping >15% in this plot. 
+
+For each borough, it's showing the relative frequencies which shows that Manhattan has the most rides. It also shows very few data points for EWR, Bronx, and unknown. It's possible that those with fewer points would be skewed towards more 0's than 1's so that's something to keep in mind. 
 
 ```{r}
 # testing
