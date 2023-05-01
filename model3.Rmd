@@ -1,1 +1,71 @@
 # [Model 3]
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = TRUE, echo = FALSE)
+```
+
+```{r cars}
+taxi_data <- read.csv('data/2021_taxi_data_mod.csv')
+```
+
+```{r}
+library(fastshap)
+library(randomForest)
+library(tidyverse)
+taxi_data <- taxi_data[!is.na(taxi_data$passenger_count),]
+```
+
+Split into test and train:
+
+```{r}
+set.seed(5293)
+n <- nrow(taxi_data)
+train <- sample(n, .8*n)
+train_dat <- taxi_data[train, ]
+test_dat <- taxi_data[-train, ]
+head(train_dat)
+```
+
+
+```{r}
+# change to just tip/no tip
+
+train_dat$tip_01 <- factor(ifelse(train_dat$tip_percent < 0.01, 0, 1))
+test_dat$tip_01 <- factor(ifelse(test_dat$tip_percent < 0.01, 0, 1))
+
+mod <- randomForest(tip_01 ~ passenger_count + VendorID + RatecodeID + DOLocationID + PULocationID + season + high_fare, data = train_dat)
+mod
+mean(predict(mod, test_dat) == test_dat$tip_01)
+```
+
+To understand our random forest results, we first need to understand OOB (out of bag) estimate of error rate: at each split does some evaluation by splitting the data. The 25.9% number is a weighted average based on how many observations go through that node. 
+
+
+```{r}
+pred <- function(model, newdata) {
+  predict(model, newdata = newdata, type = "prob")[, "tip"]
+}
+
+shap_values <- fastshap::explain(
+  mod, 
+  X = train_dat,           
+  feature_names = colnames(train_dat |> dplyr::select(passenger_count, VendorID, RatecodeID, dropoff_borough, season, high_fare)),
+  pred_wrapper = pred, 
+  nsim = 5, # increase as much as possible as long as doesn't take too long
+  newdata = train_dat[5,] # explains the 5th prediction
+  # can do range of rows if you want to use this to explain multiple observations
+)
+```
+
+
+```{r}
+shap_values <- as_tibble(shap_values)
+shap_values
+mean(predict(mod, train_dat, type="prob")[,2])
+```
+
+
+
+
+
+

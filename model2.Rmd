@@ -1,1 +1,46 @@
 # [Model 2]
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+library(OneR)
+library(ggplot2)
+library(forcats)
+library(dplyr)
+```
+
+```{r}
+taxi_data <- read.csv('data/2021_taxi_data_mod.csv')
+taxi_data$tip <- factor(taxi_data$tip)
+```
+
+```{r}
+taxi_data <- taxi_data[!is.na(taxi_data$passenger_count),]
+```
+
+For my second model, I decided to try removing all rows with passenger counts that are NA. Miraculously, all NAs in the entire dataset disappeared! I will be using this set going forward. 
+
+Now, I want to split into test and train:
+
+```{r}
+set.seed(5293)
+n <- nrow(taxi_data)
+train <- sample(n, .8*n)
+train_dat <- taxi_data[train, ]
+test_dat <- taxi_data[-train, ]
+```
+
+```{r}
+library(rpart)
+library(rpart.plot)
+
+mod1 <- rpart(tip ~ passenger_count + VendorID + RatecodeID + dropoff_borough + season + high_fare, data = train_dat, 
+              method="class", 
+              control=rpart.control(cp=0))
+# rpart.plot(mod1, main = "tip", under=TRUE)
+summary(mod1)
+plotcp(mod1)
+```
+

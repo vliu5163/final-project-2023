@@ -1,7 +1,7 @@
 # [Model 1]
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r}
@@ -11,7 +11,7 @@ library(forcats)
 library(dplyr)
 ```
 
-```{r cars}
+```{r}
 taxi_data <- read.csv('data/2021_taxi_data_mod.csv')
 ```
 
@@ -23,13 +23,21 @@ n <- nrow(taxi_data)
 train <- sample(n, .8*n)
 train_dat <- taxi_data[train, ]
 test_dat <- taxi_data[-train, ]
-head(train_dat)
 ```
+In this model, I decided to use a OneR model to see which of the features would be most "important" in minimizing prediction error. How it works is that for each predictor that I feed the model, it generates "one rule," and at the end it selects the rule that minimizes error. In this case, I decided to try pickup borough, dropoff borough, passenger count, high fare, season, rate code ID, and vendor ID. 
+
+* pickup borough/dropoff borough: I thought this may be important in that people whose destinations/origins are different boroughs may have different tipping habits.
+* passenger count: my hypothesis was that for rides with higher passenger counts, the tip might be higher. This was somewhat disproved in my EDA, but I wanted to include it in my OneR.
+* high fare: I wanted to see whether or not rides with higher fares may tip higher, or if rides with lower fares tip higher proportionally to the fare.
+* season: my hypothesis was that maybe rides in the winter (where it's less convenient to walk/take public transporation) may be tipped higher.
+* rate code ID: this represents different types of ride such as "standard" or rides to EWR/JFK. Maybe people who take rides with set fares (like those to the airports) consistently tip at 15-20% because they know exactly what to expect.
+* vendor ID: this data represents two different taxi companies. Maybe one has a consistently higher level of service corresponding to better tips for their drivers.
+
+Above, I've listed the reasons for why I included specific features. But as a reminder, OneR will only choose ONE of the above predictors as the one that minimizes error. We'll see which one does the best job when we run the model. 
 
 ```{r}
-# one thing to note- I struggled for a bit before realizing that I needed to make my tip column
-# into a factor with 2 levels: 0 and 1!
-mod <- OneR(factor(tip) ~ pickup_borough + dropoff_borough + passenger_count + high_fare, data = train_dat)
+# one thing to note- I struggled for a bit before Professor Robbins reminded me that I needed to make my tip column nto a factor with 2 levels: 0 and 1!
+mod <- OneR(factor(tip) ~ pickup_borough + dropoff_borough + passenger_count + high_fare + season + RatecodeID + VendorID, data = train_dat)
 summary(mod)
 plot(mod)
 mean(predict(mod, train_dat) == train_dat$tip)
@@ -54,13 +62,3 @@ Based on the OneR analysis, it seems that dropoff borough is the most important 
 
 For each borough, it's showing the relative frequencies which shows that Manhattan has the most rides. It also shows very few data points for EWR, Bronx, and unknown. It's possible that those with fewer points would be skewed towards more 0's than 1's so that's something to keep in mind. 
 
-```{r}
-# testing
-library(rpart)
-library(rpart.plot)
-
-mod1 <- rpart(tip ~ pickup_borough + dropoff_borough + season + high_fare, data = train_dat, 
-              method="class", 
-              control=rpart.control(cp=0))
-rpart.plot(mod1, main = "tip", under=TRUE)
-```

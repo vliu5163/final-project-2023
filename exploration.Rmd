@@ -1,15 +1,18 @@
-# [Exploration]
+# Exploration
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
 
 ```{r}
-taxi_data <- read.csv('~/Desktop/2021_taxi_data_large.csv')
-head(taxi_data)
+taxi_data <- read.csv('~/Desktop/2021_taxi_data.csv')
 ```
 My goal is to look into the factors that determine how people tip. To do this, I want to create a "tipped" column that is just a binary of whether or not somebody tipped at all. I also want to create a "tip" column that shows whether or not somebody tipped over 10% of the fare amount. 
 
 Note: initially, I tried to use 15% as the threshold. After doing some analysis on results and thinking about them, I decided that 10% would be a better threshold as it would indicate one tipping above a negligable amount. Usually, 15% is a pretty standard tip for some who meant to tip at all. 
 
 ```{r}
-# advice on what to do about the NAs?
+library(ggplot2)
 colSums(is.na(taxi_data))
 ```
 To understand the columns and what the values mean, I used this site:
@@ -25,7 +28,7 @@ congestion_surcharge: not sure
 ```{r}
 taxi_data["VendorID"][is.na(taxi_data["VendorID"])] <- 0
 taxi_data["payment_type"][is.na(taxi_data["payment_type"])] <- 5
-taxi_data <- taxi_data[!is.na(taxi_data$passenger_count),]
+# taxi_data <- taxi_data[!is.na(taxi_data$passenger_count),]
 colSums(is.na(taxi_data))
 ```
 For some reason, removing all rows with passenger_count NA removes all other NA instances. This is good!
@@ -42,7 +45,7 @@ dim(taxi_data)
 tip_percent <- taxi_data$tip_amount / taxi_data$fare_amount
 taxi_data$tip_percent <- tip_percent
 
-tip <- ifelse(taxi_data$tip_percent < 0.10, 0, 1)
+tip <- ifelse(taxi_data$tip_percent < 0.15, 0, 1)
 taxi_data$tip <- tip
 mean(!taxi_data$tip)
 # of the sampled data, 29.6% of rides were tipped under 10%.
@@ -53,7 +56,6 @@ As we can see, of the sampled data, 27.1% of rides were NOT tipped and 29.6% of 
 ```{r}
 hist(taxi_data$fare_amount, main="Fare Amount", xlab="fare", breaks=20)
 negative <- taxi_data[taxi_data$fare_amount < 0, ]
-negative
 ```
 This is odd- there seem to be some rides where the fare amount is negative (the taxi driver owes the passenger the fare amount). I did some research and attributed this to messy data, so I removed the negative fares and redid the histogram. 
 
@@ -152,15 +154,23 @@ taxi_data$pickup_borough <- pickup_borough
 taxi_data$dropoff_borough <- dropoff_borough
 ```
 
+Let's look at the relative frequencies of the passenger count.
+
+```{r}
+hist(taxi_data$passenger_count, main="Passenger Count", xlab="passenger count", breaks=20)
+```
+
+For the most part, we have rides with only 1 passenger, followed by 2. What's surprising to me is that there are rides with 5-6 passengers at all; over covid, I remember that most taxis only allowed 1-3 passengers to ride but maybe by late 2021 they lifted the restrictions. 
 
 ```{r}
 taxi_data$passenger_count <- factor(taxi_data$passenger_count)
-table(passenger_count)
+table(taxi_data$passenger_count)
 ggplot(taxi_data, aes(x=passenger_count, y=tip_percent)) +
   geom_boxplot(outlier.shape = NA) +
   ylim(0, 1) +
   coord_flip()
 ```
+This is interesting- there doesn't seem to be much of a trend in passenger count vs tip percentage. 
 
 ```{r}
 taxi_data$pickup_borough <- factor(taxi_data$pickup_borough)
@@ -172,12 +182,14 @@ ggplot(taxi_data, aes(x=pickup_borough, y=tip_percent)) +
 ```
 
 ```{r}
+library(forcats)
 ggplot(taxi_data, aes(fct_infreq(dropoff_borough), fill=factor(tip))) +
   geom_bar(position="dodge")
 ```
 At this point in my iterations, I've created all the new categorical variables I'd like to create for my data analysis. 
 
 ```{r}
+taxi_data$tip <- factor(taxi_data$tip)
 write.csv(taxi_data, file='data/2021_taxi_data_mod.csv')
 ```
 
