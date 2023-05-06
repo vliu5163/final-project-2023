@@ -1,0 +1,52 @@
+# [Model 4: Naive Bayes]
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = TRUE, echo = FALSE)
+```
+
+## Naive Bayes Model
+```{r}
+taxi_data <- read.csv('data/2021_taxi_data_mod.csv')
+taxi_data <- taxi_data[!is.na(taxi_data$passenger_count),]
+taxi_data$tip <- factor(taxi_data$tip)
+taxi_data$passenger_count <- factor(taxi_data$passenger_count)
+taxi_data$VendorID <- factor(taxi_data$VendorID)
+taxi_data$RatecodeID <- factor(taxi_data$RatecodeID)
+taxi_data$high_fare <- factor(taxi_data$high_fare)
+taxi_data$payment_type <- factor(taxi_data$payment_type)
+```
+
+```{r}
+library(e1071)
+library(tidyverse)
+```
+
+For my final model, I wanted to see how Naive Bayes would work. It seems like a pretty simple predictive model, so I wanted to see how it may compare to my other models. For this model, I'll just produce the model with the same features I've been using so far and get the accuracy, sensitivity, and specificity. 
+
+```{r}
+set.seed(5293)
+n <- nrow(taxi_data)
+train <- sample(n, .8*n)
+train_dat <- taxi_data[train, ]
+test_dat <- taxi_data[-train, ]
+```
+
+```{r}
+nb_mod <- naiveBayes(tip ~ passenger_count + VendorID + RatecodeID + dropoff_borough + pickup_borough + 
+                       season + high_fare + payment_type, data = train_dat)
+nb_mod_pred <- predict(nb_mod, test_dat, type = "class")
+table(nb_mod_pred, test_dat$tip) 
+```
+```{r}
+library(caret)
+test_predicted <- predict(nb_mod, test_dat, type = "class")
+test_pred <- table(test_predicted, test_dat$tip)
+print("Overall accuracy:")
+mean(predict(nb_mod, test_dat) == test_dat$tip)
+print("Test sensitivity and specificity:")
+sensitivity(test_pred)
+specificity(test_pred)
+```
+Interesting- this is the highest accuracy we've seen so far.
+
+

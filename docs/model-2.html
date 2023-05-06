@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 [Model 2] | Final Project Proposal</title>
-  <meta name="description" content="Chapter 5 [Model 2] | Final Project Proposal" />
+  <title>Chapter 4 [Model 2] | NYC Yellow Taxi Tipping Patterns</title>
+  <meta name="description" content="Chapter 4 [Model 2] | NYC Yellow Taxi Tipping Patterns" />
   <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 [Model 2] | Final Project Proposal" />
+  <meta property="og:title" content="Chapter 4 [Model 2] | NYC Yellow Taxi Tipping Patterns" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 [Model 2] | Final Project Proposal" />
+  <meta name="twitter:title" content="Chapter 4 [Model 2] | NYC Yellow Taxi Tipping Patterns" />
   
   
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Vivian Liu" />
 
 
-<meta name="date" content="2023-05-01" />
+<meta name="date" content="2023-05-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,13 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
 
 
@@ -72,13 +79,26 @@
 <li><a href="./">FINAL</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Proposal</a></li>
-<li class="chapter" data-level="2" data-path="sources.html"><a href="sources.html"><i class="fa fa-check"></i><b>2</b> Sources</a></li>
-<li class="chapter" data-level="3" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i><b>3</b> Exploration</a></li>
-<li class="chapter" data-level="4" data-path="model-1.html"><a href="model-1.html"><i class="fa fa-check"></i><b>4</b> [Model 1]</a></li>
-<li class="chapter" data-level="5" data-path="model-2.html"><a href="model-2.html"><i class="fa fa-check"></i><b>5</b> [Model 2]</a></li>
-<li class="chapter" data-level="6" data-path="model-3.html"><a href="model-3.html"><i class="fa fa-check"></i><b>6</b> [Model 3]</a></li>
-<li class="chapter" data-level="7" data-path="reflections.html"><a href="reflections.html"><i class="fa fa-check"></i><b>7</b> Reflections</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#data"><i class="fa fa-check"></i><b>1.1</b> Data</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#modeling-goal"><i class="fa fa-check"></i><b>1.2</b> Modeling Goal</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#models"><i class="fa fa-check"></i><b>1.3</b> Models</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#data-sources"><i class="fa fa-check"></i><b>1.4</b> Data Sources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i><b>2</b> Exploration</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="exploration.html"><a href="exploration.html#data-wrangling"><i class="fa fa-check"></i><b>2.1</b> Data Wrangling</a></li>
+<li class="chapter" data-level="2.2" data-path="exploration.html"><a href="exploration.html#data-visualization"><i class="fa fa-check"></i><b>2.2</b> Data Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="model-1.html"><a href="model-1.html"><i class="fa fa-check"></i><b>3</b> [Model 1]</a></li>
+<li class="chapter" data-level="4" data-path="model-2.html"><a href="model-2.html"><i class="fa fa-check"></i><b>4</b> [Model 2]</a></li>
+<li class="chapter" data-level="5" data-path="model-3.html"><a href="model-3.html"><i class="fa fa-check"></i><b>5</b> [Model 3]</a></li>
+<li class="chapter" data-level="6" data-path="reflections.html"><a href="reflections.html"><i class="fa fa-check"></i><b>6</b> Reflections</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="reflections.html"><a href="reflections.html#model-conclusions"><i class="fa fa-check"></i><b>6.1</b> Model Conclusions</a></li>
+<li class="chapter" data-level="6.2" data-path="reflections.html"><a href="reflections.html#final-thoughts"><i class="fa fa-check"></i><b>6.2</b> Final Thoughts</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -90,7 +110,7 @@
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Final Project Proposal</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">NYC Yellow Taxi Tipping Patterns</a>
           </h1>
         </div>
 
@@ -98,583 +118,33 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="model-2" class="section level1 hasAnchor" number="5">
-<h1><span class="header-section-number">Chapter 5</span> [Model 2]<a href="model-2.html#model-2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>For my second model, I decided to try removing all rows with passenger counts that are NA. Miraculously, all NAs in the entire dataset disappeared! I will be using this set going forward.</p>
-<p>Now, I want to split into test and train:</p>
-<pre><code>## Call:
-## rpart(formula = tip ~ passenger_count + VendorID + RatecodeID + 
-##     dropoff_borough + season + high_fare, data = train_dat, method = &quot;class&quot;, 
-##     control = rpart.control(cp = 0))
-##   n= 3781 
-## 
-##              CP nsplit rel error    xerror       xstd
-## 1  0.0132812500      0 1.0000000 1.0000000 0.02273257
-## 2  0.0062500000      1 0.9867188 1.0000000 0.02273257
-## 3  0.0054687500      2 0.9804688 1.0000000 0.02273257
-## 4  0.0046875000      4 0.9695313 1.0000000 0.02273257
-## 5  0.0023437500      5 0.9648438 0.9984375 0.02272388
-## 6  0.0018229167      6 0.9625000 1.0062500 0.02276700
-## 7  0.0015625000      9 0.9570312 1.0078125 0.02277553
-## 8  0.0013020833     11 0.9539063 1.0023438 0.02274554
-## 9  0.0011718750     14 0.9500000 1.0023438 0.02274554
-## 10 0.0007812500     16 0.9476563 1.0039062 0.02275415
-## 11 0.0003906250     24 0.9414062 1.0015625 0.02274122
-## 12 0.0002604167     30 0.9390625 1.0031250 0.02274985
-## 13 0.0000000000     33 0.9382813 1.0054688 0.02276272
-## 
-## Variable importance
-## dropoff_borough      RatecodeID          season passenger_count       high_fare 
-##              43              19              16              11               7 
-##        VendorID 
-##               4 
-## 
-## Node number 1: 3781 observations,    complexity param=0.01328125
-##   predicted class=1  expected loss=0.3385348  P(node) =1
-##     class counts:  1280  2501
-##    probabilities: 0.339 0.661 
-##   left son=2 (235 obs) right son=3 (3546 obs)
-##   Primary splits:
-##       dropoff_borough splits as  LRLRLL,  improve=19.574710, (0 missing)
-##       high_fare       &lt; 0.5 to the right, improve=11.362510, (0 missing)
-##       RatecodeID      &lt; 2.5 to the right, improve= 5.856027, (0 missing)
-##       passenger_count &lt; 0.5 to the right, improve= 1.008938, (0 missing)
-##       VendorID        &lt; 1.5 to the left,  improve= 0.334281, (0 missing)
-##   Surrogate splits:
-##       RatecodeID &lt; 2.5 to the right, agree=0.94, adj=0.03, (0 split)
-## 
-## Node number 2: 235 observations,    complexity param=0.00546875
-##   predicted class=0  expected loss=0.4638298  P(node) =0.06215287
-##     class counts:   126   109
-##    probabilities: 0.536 0.464 
-##   left son=4 (32 obs) right son=5 (203 obs)
-##   Primary splits:
-##       dropoff_borough splits as  L-R-RR,  improve=7.0091830, (0 missing)
-##       RatecodeID      &lt; 1.5 to the left,  improve=3.6313050, (0 missing)
-##       high_fare       &lt; 0.5 to the left,  improve=1.3639840, (0 missing)
-##       season          splits as  RLRR,    improve=1.0282250, (0 missing)
-##       passenger_count &lt; 4.5 to the left,  improve=0.6321611, (0 missing)
-## 
-## Node number 3: 3546 observations,    complexity param=0.00625
-##   predicted class=1  expected loss=0.3254371  P(node) =0.9378471
-##     class counts:  1154  2392
-##    probabilities: 0.325 0.675 
-##   left son=6 (10 obs) right son=7 (3536 obs)
-##   Primary splits:
-##       RatecodeID      &lt; 2.5 to the right, improve=6.6211220, (0 missing)
-##       high_fare       &lt; 0.5 to the right, improve=6.0724450, (0 missing)
-##       dropoff_borough splits as  -L-R--,  improve=1.8593150, (0 missing)
-##       passenger_count &lt; 0.5 to the right, improve=1.2191900, (0 missing)
-##       VendorID        &lt; 1.5 to the left,  improve=0.2611971, (0 missing)
-## 
-## Node number 4: 32 observations,    complexity param=0.00078125
-##   predicted class=0  expected loss=0.15625  P(node) =0.008463369
-##     class counts:    27     5
-##    probabilities: 0.844 0.156 
-##   left son=8 (25 obs) right son=9 (7 obs)
-##   Primary splits:
-##       season    splits as  RLLL,    improve=3.088929000, (0 missing)
-##       high_fare &lt; 0.5 to the left,  improve=0.710227300, (0 missing)
-##       VendorID  &lt; 1.5 to the left,  improve=0.008928571, (0 missing)
-## 
-## Node number 5: 203 observations,    complexity param=0.00546875
-##   predicted class=1  expected loss=0.4876847  P(node) =0.0536895
-##     class counts:    99   104
-##    probabilities: 0.488 0.512 
-##   left son=10 (159 obs) right son=11 (44 obs)
-##   Primary splits:
-##       RatecodeID      &lt; 1.5 to the left,  improve=2.4204130, (0 missing)
-##       high_fare       &lt; 0.5 to the left,  improve=1.0279060, (0 missing)
-##       dropoff_borough splits as  --R-RL,  improve=0.9725392, (0 missing)
-##       passenger_count &lt; 2.5 to the left,  improve=0.7593679, (0 missing)
-##       season          splits as  LLRL,    improve=0.4864676, (0 missing)
-##   Surrogate splits:
-##       dropoff_borough splits as  --R-LL, agree=0.803, adj=0.091, (0 split)
-## 
-## Node number 6: 10 observations
-##   predicted class=0  expected loss=0.1  P(node) =0.002644803
-##     class counts:     9     1
-##    probabilities: 0.900 0.100 
-## 
-## Node number 7: 3536 observations,    complexity param=0.001822917
-##   predicted class=1  expected loss=0.3238122  P(node) =0.9352023
-##     class counts:  1145  2391
-##    probabilities: 0.324 0.676 
-##   left son=14 (395 obs) right son=15 (3141 obs)
-##   Primary splits:
-##       high_fare       &lt; 0.5 to the right, improve=5.1622860, (0 missing)
-##       dropoff_borough splits as  -L-R--,  improve=1.7123350, (0 missing)
-##       RatecodeID      &lt; 1.5 to the right, improve=1.6748600, (0 missing)
-##       passenger_count &lt; 0.5 to the right, improve=1.1749510, (0 missing)
-##       VendorID        &lt; 1.5 to the left,  improve=0.3417962, (0 missing)
-##   Surrogate splits:
-##       RatecodeID      &lt; 1.5 to the right, agree=0.909, adj=0.182, (0 split)
-##       dropoff_borough splits as  -L-R--,  agree=0.906, adj=0.157, (0 split)
-## 
-## Node number 8: 25 observations
-##   predicted class=0  expected loss=0.04  P(node) =0.006612007
-##     class counts:    24     1
-##    probabilities: 0.960 0.040 
-## 
-## Node number 9: 7 observations
-##   predicted class=1  expected loss=0.4285714  P(node) =0.001851362
-##     class counts:     3     4
-##    probabilities: 0.429 0.571 
-## 
-## Node number 10: 159 observations,    complexity param=0.0046875
-##   predicted class=0  expected loss=0.4716981  P(node) =0.04205237
-##     class counts:    84    75
-##    probabilities: 0.528 0.472 
-##   left son=20 (105 obs) right son=21 (54 obs)
-##   Primary splits:
-##       season          splits as  LLRL,    improve=1.1500450, (0 missing)
-##       passenger_count &lt; 2.5 to the left,  improve=0.7890182, (0 missing)
-##       high_fare       &lt; 0.5 to the left,  improve=0.3157056, (0 missing)
-##       VendorID        &lt; 1.5 to the right, improve=0.2180499, (0 missing)
-##       dropoff_borough splits as  ----RL,  improve=0.1367495, (0 missing)
-## 
-## Node number 11: 44 observations,    complexity param=0.00234375
-##   predicted class=1  expected loss=0.3409091  P(node) =0.01163713
-##     class counts:    15    29
-##    probabilities: 0.341 0.659 
-##   left son=22 (13 obs) right son=23 (31 obs)
-##   Primary splits:
-##       dropoff_borough splits as  --L-RL,  improve=2.7801710, (0 missing)
-##       RatecodeID      &lt; 3.5 to the right, improve=1.4402210, (0 missing)
-##       passenger_count &lt; 1.5 to the right, improve=0.6530692, (0 missing)
-##       VendorID        &lt; 1.5 to the left,  improve=0.1893939, (0 missing)
-##       season          splits as  LRLR,    improve=0.1213112, (0 missing)
-##   Surrogate splits:
-##       RatecodeID &lt; 2.5 to the right, agree=0.886, adj=0.615, (0 split)
-## 
-## Node number 14: 395 observations,    complexity param=0.001822917
-##   predicted class=1  expected loss=0.4  P(node) =0.1044697
-##     class counts:   158   237
-##    probabilities: 0.400 0.600 
-##   left son=28 (127 obs) right son=29 (268 obs)
-##   Primary splits:
-##       VendorID        &lt; 1.5 to the left,  improve=2.41484300, (0 missing)
-##       dropoff_borough splits as  -L-R--,  improve=0.32276810, (0 missing)
-##       passenger_count &lt; 1.5 to the left,  improve=0.20724080, (0 missing)
-##       RatecodeID      &lt; 1.5 to the right, improve=0.16441350, (0 missing)
-##       season          splits as  LLRR,    improve=0.09802594, (0 missing)
-##   Surrogate splits:
-##       passenger_count &lt; 0.5 to the left,  agree=0.709, adj=0.094, (0 split)
-## 
-## Node number 15: 3141 observations,    complexity param=0.000390625
-##   predicted class=1  expected loss=0.3142311  P(node) =0.8307326
-##     class counts:   987  2154
-##    probabilities: 0.314 0.686 
-##   left son=30 (3077 obs) right son=31 (64 obs)
-##   Primary splits:
-##       passenger_count &lt; 0.5 to the right, improve=1.6129710000, (0 missing)
-##       season          splits as  RLLR,    improve=0.1043094000, (0 missing)
-##       VendorID        &lt; 1.5 to the left,  improve=0.0012775340, (0 missing)
-##       dropoff_borough splits as  -R-L--,  improve=0.0001937715, (0 missing)
-## 
-## Node number 20: 105 observations,    complexity param=0.0015625
-##   predicted class=0  expected loss=0.4285714  P(node) =0.02777043
-##     class counts:    60    45
-##    probabilities: 0.571 0.429 
-##   left son=40 (12 obs) right son=41 (93 obs)
-##   Primary splits:
-##       dropoff_borough splits as  ----RL,  improve=0.86405530, (0 missing)
-##       passenger_count &lt; 4   to the left,  improve=0.66826220, (0 missing)
-##       high_fare       &lt; 0.5 to the left,  improve=0.30612240, (0 missing)
-##       VendorID        &lt; 1.5 to the right, improve=0.10901660, (0 missing)
-##       season          splits as  LR-R,    improve=0.02506266, (0 missing)
-## 
-## Node number 21: 54 observations,    complexity param=0.00078125
-##   predicted class=1  expected loss=0.4444444  P(node) =0.01428194
-##     class counts:    24    30
-##    probabilities: 0.444 0.556 
-##   left son=42 (40 obs) right son=43 (14 obs)
-##   Primary splits:
-##       VendorID        &lt; 1.5 to the right, improve=0.288095200, (0 missing)
-##       passenger_count &lt; 2.5 to the left,  improve=0.090579710, (0 missing)
-##       high_fare       &lt; 0.5 to the left,  improve=0.007575758, (0 missing)
-## 
-## Node number 22: 13 observations
-##   predicted class=0  expected loss=0.3846154  P(node) =0.003438244
-##     class counts:     8     5
-##    probabilities: 0.615 0.385 
-## 
-## Node number 23: 31 observations
-##   predicted class=1  expected loss=0.2258065  P(node) =0.008198889
-##     class counts:     7    24
-##    probabilities: 0.226 0.774 
-## 
-## Node number 28: 127 observations,    complexity param=0.001822917
-##   predicted class=1  expected loss=0.480315  P(node) =0.033589
-##     class counts:    61    66
-##    probabilities: 0.480 0.520 
-##   left son=56 (93 obs) right son=57 (34 obs)
-##   Primary splits:
-##       season          splits as  LLLR,    improve=2.28266300, (0 missing)
-##       passenger_count &lt; 2.5 to the right, improve=0.58652780, (0 missing)
-##       RatecodeID      &lt; 1.5 to the right, improve=0.09519565, (0 missing)
-##       dropoff_borough splits as  -R-L--,  improve=0.05188536, (0 missing)
-## 
-## Node number 29: 268 observations,    complexity param=0.00078125
-##   predicted class=1  expected loss=0.3619403  P(node) =0.07088072
-##     class counts:    97   171
-##    probabilities: 0.362 0.638 
-##   left son=58 (204 obs) right son=59 (64 obs)
-##   Primary splits:
-##       passenger_count &lt; 1.5 to the left,  improve=1.0948570, (0 missing)
-##       dropoff_borough splits as  -L-R--,  improve=0.5776783, (0 missing)
-##       season          splits as  RRRL,    improve=0.4422420, (0 missing)
-##       RatecodeID      &lt; 1.5 to the right, improve=0.1150179, (0 missing)
-## 
-## Node number 30: 3077 observations,    complexity param=0.000390625
-##   predicted class=1  expected loss=0.3165421  P(node) =0.8138059
-##     class counts:   974  2103
-##    probabilities: 0.317 0.683 
-##   left son=60 (784 obs) right son=61 (2293 obs)
-##   Primary splits:
-##       passenger_count &lt; 1.5 to the right, improve=1.213904000, (0 missing)
-##       VendorID        &lt; 1.5 to the left,  improve=0.102197800, (0 missing)
-##       season          splits as  RLLR,    improve=0.101199700, (0 missing)
-##       dropoff_borough splits as  -L-R--,  improve=0.002283788, (0 missing)
-## 
-## Node number 31: 64 observations
-##   predicted class=1  expected loss=0.203125  P(node) =0.01692674
-##     class counts:    13    51
-##    probabilities: 0.203 0.797 
-## 
-## Node number 40: 12 observations
-##   predicted class=0  expected loss=0.25  P(node) =0.003173764
-##     class counts:     9     3
-##    probabilities: 0.750 0.250 
-## 
-## Node number 41: 93 observations,    complexity param=0.0015625
-##   predicted class=0  expected loss=0.4516129  P(node) =0.02459667
-##     class counts:    51    42
-##    probabilities: 0.548 0.452 
-##   left son=82 (85 obs) right son=83 (8 obs)
-##   Primary splits:
-##       passenger_count &lt; 2.5 to the left,  improve=1.5586340, (0 missing)
-##       high_fare       &lt; 0.5 to the left,  improve=0.2297583, (0 missing)
-##       VendorID        &lt; 1.5 to the right, improve=0.2073733, (0 missing)
-##       season          splits as  RR-L,    improve=0.1205506, (0 missing)
-## 
-## Node number 42: 40 observations,    complexity param=0.00078125
-##   predicted class=1  expected loss=0.475  P(node) =0.01057921
-##     class counts:    19    21
-##    probabilities: 0.475 0.525 
-##   left son=84 (16 obs) right son=85 (24 obs)
-##   Primary splits:
-##       high_fare       &lt; 0.5 to the left,  improve=0.4083333, (0 missing)
-##       passenger_count &lt; 1.5 to the right, improve=0.1506270, (0 missing)
-##   Surrogate splits:
-##       dropoff_borough splits as  ----RL,  agree=0.675, adj=0.188, (0 split)
-##       passenger_count &lt; 3.5 to the right, agree=0.625, adj=0.063, (0 split)
-## 
-## Node number 43: 14 observations
-##   predicted class=1  expected loss=0.3571429  P(node) =0.003702724
-##     class counts:     5     9
-##    probabilities: 0.357 0.643 
-## 
-## Node number 56: 93 observations,    complexity param=0.001302083
-##   predicted class=0  expected loss=0.4623656  P(node) =0.02459667
-##     class counts:    50    43
-##    probabilities: 0.538 0.462 
-##   left son=112 (9 obs) right son=113 (84 obs)
-##   Primary splits:
-##       passenger_count &lt; 2.5 to the right, improve=1.1492580, (0 missing)
-##       dropoff_borough splits as  -R-L--,  improve=0.4179598, (0 missing)
-##       RatecodeID      &lt; 1.5 to the right, improve=0.3649497, (0 missing)
-##       season          splits as  LRL-,    improve=0.2154411, (0 missing)
-## 
-## Node number 57: 34 observations
-##   predicted class=1  expected loss=0.3235294  P(node) =0.00899233
-##     class counts:    11    23
-##    probabilities: 0.324 0.676 
-## 
-## Node number 58: 204 observations,    complexity param=0.00078125
-##   predicted class=1  expected loss=0.3872549  P(node) =0.05395398
-##     class counts:    79   125
-##    probabilities: 0.387 0.613 
-##   left son=116 (132 obs) right son=117 (72 obs)
-##   Primary splits:
-##       season          splits as  LLRL,    improve=0.6470588, (0 missing)
-##       RatecodeID      &lt; 1.5 to the right, improve=0.5666667, (0 missing)
-##       dropoff_borough splits as  -L-R--,  improve=0.3169306, (0 missing)
-## 
-## Node number 59: 64 observations,    complexity param=0.0002604167
-##   predicted class=1  expected loss=0.28125  P(node) =0.01692674
-##     class counts:    18    46
-##    probabilities: 0.281 0.719 
-##   left son=118 (35 obs) right son=119 (29 obs)
-##   Primary splits:
-##       season          splits as  RLLL,    improve=1.25628100, (0 missing)
-##       passenger_count &lt; 2.5 to the left,  improve=0.27032160, (0 missing)
-##       dropoff_borough splits as  -L-R--,  improve=0.18031730, (0 missing)
-##       RatecodeID      &lt; 1.5 to the left,  improve=0.09777847, (0 missing)
-##   Surrogate splits:
-##       passenger_count &lt; 5.5 to the left,  agree=0.562, adj=0.034, (0 split)
-## 
-## Node number 60: 784 observations,    complexity param=0.000390625
-##   predicted class=1  expected loss=0.3405612  P(node) =0.2073526
-##     class counts:   267   517
-##    probabilities: 0.341 0.659 
-##   left son=120 (632 obs) right son=121 (152 obs)
-##   Primary splits:
-##       season          splits as  LLLR,    improve=0.7470683, (0 missing)
-##       VendorID        &lt; 1.5 to the right, improve=0.1919206, (0 missing)
-##       dropoff_borough splits as  -R-L--,  improve=0.1325742, (0 missing)
-##       passenger_count &lt; 3.5 to the right, improve=0.1282307, (0 missing)
-## 
-## Node number 61: 2293 observations
-##   predicted class=1  expected loss=0.3083297  P(node) =0.6064533
-##     class counts:   707  1586
-##    probabilities: 0.308 0.692 
-## 
-## Node number 82: 85 observations,    complexity param=0.001171875
-##   predicted class=0  expected loss=0.4235294  P(node) =0.02248083
-##     class counts:    49    36
-##    probabilities: 0.576 0.424 
-##   left son=164 (55 obs) right son=165 (30 obs)
-##   Primary splits:
-##       VendorID        &lt; 1.5 to the right, improve=0.5422460000, (0 missing)
-##       high_fare       &lt; 0.5 to the left,  improve=0.1498733000, (0 missing)
-##       season          splits as  RR-L,    improve=0.0392156900, (0 missing)
-##       passenger_count &lt; 1.5 to the left,  improve=0.0008521719, (0 missing)
-##   Surrogate splits:
-##       passenger_count &lt; 0.5 to the right, agree=0.706, adj=0.167, (0 split)
-## 
-## Node number 83: 8 observations
-##   predicted class=1  expected loss=0.25  P(node) =0.002115842
-##     class counts:     2     6
-##    probabilities: 0.250 0.750 
-## 
-## Node number 84: 16 observations
-##   predicted class=0  expected loss=0.4375  P(node) =0.004231685
-##     class counts:     9     7
-##    probabilities: 0.562 0.438 
-## 
-## Node number 85: 24 observations
-##   predicted class=1  expected loss=0.4166667  P(node) =0.006347527
-##     class counts:    10    14
-##    probabilities: 0.417 0.583 
-## 
-## Node number 112: 9 observations
-##   predicted class=0  expected loss=0.2222222  P(node) =0.002380323
-##     class counts:     7     2
-##    probabilities: 0.778 0.222 
-## 
-## Node number 113: 84 observations,    complexity param=0.001302083
-##   predicted class=0  expected loss=0.4880952  P(node) =0.02221634
-##     class counts:    43    41
-##    probabilities: 0.512 0.488 
-##   left son=226 (64 obs) right son=227 (20 obs)
-##   Primary splits:
-##       season          splits as  LRL-,    improve=0.2011905, (0 missing)
-##       RatecodeID      &lt; 1.5 to the right, improve=0.1428571, (0 missing)
-##       passenger_count &lt; 0.5 to the right, improve=0.1060606, (0 missing)
-##       dropoff_borough splits as  -R-L--,  improve=0.0717001, (0 missing)
-## 
-## Node number 116: 132 observations,    complexity param=0.00078125
-##   predicted class=1  expected loss=0.4166667  P(node) =0.0349114
-##     class counts:    55    77
-##    probabilities: 0.417 0.583 
-##   left son=232 (26 obs) right son=233 (106 obs)
-##   Primary splits:
-##       dropoff_borough splits as  -L-R--,  improve=0.96057090, (0 missing)
-##       season          splits as  LR-L,    improve=0.10784310, (0 missing)
-##       RatecodeID      &lt; 1.5 to the right, improve=0.03358255, (0 missing)
-## 
-## Node number 117: 72 observations,    complexity param=0.00078125
-##   predicted class=1  expected loss=0.3333333  P(node) =0.01904258
-##     class counts:    24    48
-##    probabilities: 0.333 0.667 
-##   left son=234 (9 obs) right son=235 (63 obs)
-##   Primary splits:
-##       RatecodeID      &lt; 1.5 to the right, improve=1.01587300, (0 missing)
-##       dropoff_borough splits as  -R-L--,  improve=0.01454545, (0 missing)
-## 
-## Node number 118: 35 observations,    complexity param=0.0002604167
-##   predicted class=1  expected loss=0.3714286  P(node) =0.00925681
-##     class counts:    13    22
-##    probabilities: 0.371 0.629 
-##   left son=236 (26 obs) right son=237 (9 obs)
-##   Primary splits:
-##       RatecodeID      &lt; 1.5 to the left,  improve=1.6420020, (0 missing)
-##       dropoff_borough splits as  -L-R--,  improve=0.7000000, (0 missing)
-##       passenger_count &lt; 2.5 to the left,  improve=0.3125541, (0 missing)
-##       season          splits as  -LRL,    improve=0.1075630, (0 missing)
-## 
-## Node number 119: 29 observations
-##   predicted class=1  expected loss=0.1724138  P(node) =0.007669929
-##     class counts:     5    24
-##    probabilities: 0.172 0.828 
-## 
-## Node number 120: 632 observations,    complexity param=0.000390625
-##   predicted class=1  expected loss=0.3512658  P(node) =0.1671515
-##     class counts:   222   410
-##    probabilities: 0.351 0.649 
-##   left son=240 (463 obs) right son=241 (169 obs)
-##   Primary splits:
-##       VendorID        &lt; 1.5 to the right, improve=0.18279810, (0 missing)
-##       passenger_count &lt; 4.5 to the right, improve=0.03129019, (0 missing)
-##       season          splits as  RLL-,    improve=0.02133136, (0 missing)
-## 
-## Node number 121: 152 observations
-##   predicted class=1  expected loss=0.2960526  P(node) =0.04020101
-##     class counts:    45   107
-##    probabilities: 0.296 0.704 
-## 
-## Node number 164: 55 observations
-##   predicted class=0  expected loss=0.3818182  P(node) =0.01454642
-##     class counts:    34    21
-##    probabilities: 0.618 0.382 
-## 
-## Node number 165: 30 observations,    complexity param=0.001171875
-##   predicted class=0  expected loss=0.5  P(node) =0.007934409
-##     class counts:    15    15
-##    probabilities: 0.500 0.500 
-##   left son=330 (7 obs) right son=331 (23 obs)
-##   Primary splits:
-##       season    splits as  RR-L,    improve=0.8385093, (0 missing)
-##       high_fare &lt; 0.5 to the left,  improve=0.0678733, (0 missing)
-##   Surrogate splits:
-##       passenger_count &lt; 1.5 to the right, agree=0.8, adj=0.143, (0 split)
-## 
-## Node number 226: 64 observations,    complexity param=0.001302083
-##   predicted class=0  expected loss=0.46875  P(node) =0.01692674
-##     class counts:    34    30
-##    probabilities: 0.531 0.469 
-##   left son=452 (47 obs) right son=453 (17 obs)
-##   Primary splits:
-##       dropoff_borough splits as  -R-L--,  improve=0.6609825000, (0 missing)
-##       RatecodeID      &lt; 1.5 to the right, improve=0.0053602060, (0 missing)
-##       season          splits as  R-L-,    improve=0.0004901961, (0 missing)
-##       passenger_count &lt; 1.5 to the left,  improve=0.0001564456, (0 missing)
-## 
-## Node number 227: 20 observations
-##   predicted class=1  expected loss=0.45  P(node) =0.005289606
-##     class counts:     9    11
-##    probabilities: 0.450 0.550 
-## 
-## Node number 232: 26 observations,    complexity param=0.00078125
-##   predicted class=0  expected loss=0.4615385  P(node) =0.006876488
-##     class counts:    14    12
-##    probabilities: 0.538 0.462 
-##   left son=464 (14 obs) right son=465 (12 obs)
-##   Primary splits:
-##       season splits as  RL-L, improve=0.6611722, (0 missing)
-## 
-## Node number 233: 106 observations
-##   predicted class=1  expected loss=0.3867925  P(node) =0.02803491
-##     class counts:    41    65
-##    probabilities: 0.387 0.613 
-## 
-## Node number 234: 9 observations
-##   predicted class=0  expected loss=0.4444444  P(node) =0.002380323
-##     class counts:     5     4
-##    probabilities: 0.556 0.444 
-## 
-## Node number 235: 63 observations
-##   predicted class=1  expected loss=0.3015873  P(node) =0.01666226
-##     class counts:    19    44
-##    probabilities: 0.302 0.698 
-## 
-## Node number 236: 26 observations,    complexity param=0.0002604167
-##   predicted class=1  expected loss=0.4615385  P(node) =0.006876488
-##     class counts:    12    14
-##    probabilities: 0.462 0.538 
-##   left son=472 (7 obs) right son=473 (19 obs)
-##   Primary splits:
-##       dropoff_borough splits as  -L-R--,  improve=0.23134760, (0 missing)
-##       season          splits as  -LRL,    improve=0.08974359, (0 missing)
-##       passenger_count &lt; 2.5 to the left,  improve=0.02082128, (0 missing)
-##   Surrogate splits:
-##       season splits as  -RRL, agree=0.769, adj=0.143, (0 split)
-## 
-## Node number 237: 9 observations
-##   predicted class=1  expected loss=0.1111111  P(node) =0.002380323
-##     class counts:     1     8
-##    probabilities: 0.111 0.889 
-## 
-## Node number 240: 463 observations
-##   predicted class=1  expected loss=0.3585313  P(node) =0.1224544
-##     class counts:   166   297
-##    probabilities: 0.359 0.641 
-## 
-## Node number 241: 169 observations,    complexity param=0.000390625
-##   predicted class=1  expected loss=0.3313609  P(node) =0.04469717
-##     class counts:    56   113
-##    probabilities: 0.331 0.669 
-##   left son=482 (112 obs) right son=483 (57 obs)
-##   Primary splits:
-##       season          splits as  LLR-,    improve=1.2647670, (0 missing)
-##       passenger_count &lt; 3.5 to the right, improve=0.8682191, (0 missing)
-##   Surrogate splits:
-##       dropoff_borough splits as  -R-L--, agree=0.675, adj=0.035, (0 split)
-## 
-## Node number 330: 7 observations
-##   predicted class=0  expected loss=0.2857143  P(node) =0.001851362
-##     class counts:     5     2
-##    probabilities: 0.714 0.286 
-## 
-## Node number 331: 23 observations
-##   predicted class=1  expected loss=0.4347826  P(node) =0.006083047
-##     class counts:    10    13
-##    probabilities: 0.435 0.565 
-## 
-## Node number 452: 47 observations
-##   predicted class=0  expected loss=0.4255319  P(node) =0.01243057
-##     class counts:    27    20
-##    probabilities: 0.574 0.426 
-## 
-## Node number 453: 17 observations
-##   predicted class=1  expected loss=0.4117647  P(node) =0.004496165
-##     class counts:     7    10
-##    probabilities: 0.412 0.588 
-## 
-## Node number 464: 14 observations
-##   predicted class=0  expected loss=0.3571429  P(node) =0.003702724
-##     class counts:     9     5
-##    probabilities: 0.643 0.357 
-## 
-## Node number 465: 12 observations
-##   predicted class=1  expected loss=0.4166667  P(node) =0.003173764
-##     class counts:     5     7
-##    probabilities: 0.417 0.583 
-## 
-## Node number 472: 7 observations
-##   predicted class=0  expected loss=0.4285714  P(node) =0.001851362
-##     class counts:     4     3
-##    probabilities: 0.571 0.429 
-## 
-## Node number 473: 19 observations
-##   predicted class=1  expected loss=0.4210526  P(node) =0.005025126
-##     class counts:     8    11
-##    probabilities: 0.421 0.579 
-## 
-## Node number 482: 112 observations,    complexity param=0.000390625
-##   predicted class=1  expected loss=0.375  P(node) =0.02962179
-##     class counts:    42    70
-##    probabilities: 0.375 0.625 
-##   left son=964 (9 obs) right son=965 (103 obs)
-##   Primary splits:
-##       passenger_count &lt; 3.5 to the right, improve=1.665049, (0 missing)
-## 
-## Node number 483: 57 observations
-##   predicted class=1  expected loss=0.245614  P(node) =0.01507538
-##     class counts:    14    43
-##    probabilities: 0.246 0.754 
-## 
-## Node number 964: 9 observations
-##   predicted class=0  expected loss=0.3333333  P(node) =0.002380323
-##     class counts:     6     3
-##    probabilities: 0.667 0.333 
-## 
-## Node number 965: 103 observations
-##   predicted class=1  expected loss=0.3495146  P(node) =0.02724147
-##     class counts:    36    67
-##    probabilities: 0.350 0.650</code></pre>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<div id="model-2" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> [Model 2]<a href="model-2.html#model-2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>For my second model, I decided to a decision tree model so I can see which features the model decides to split on. I’d like to compare the features in this model with the features that OneR ranked as important, and see if they line up. In addition, I’d like to see a more granular breakdown of the distributions of tip conditioned on different predictors.</p>
+<p>First, I want to split into test and train.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-35-1.png" width="672" />
+For the same reasons as in model1, I decided to choose passenger_count, VendorID, RatecodeID, dropoff_borough, season, and high_fare as my predictors for my decision tree. These are categorical variables with easily interpretable meanings, so I decided to keep these as my predictors.</p>
+<p>This is our initial tree with maximum depth (CP=0), which is the maximum fitting we can do (with no pruning). As we can tell, it’s not very interpretable, as it splits on many variables and is very hard to understand. Before we try some pruning, let’s look at the accuracy of this model.</p>
+<pre><code>## [1] &quot;Test sensitivity and specificity:&quot;</code></pre>
+<pre><code>## [1] 0.116208</code></pre>
+<pre><code>## [1] 0.9563813</code></pre>
+<p>The sensitivity is not great, but the specificity is pretty good. order to create a more useful model for us, we can turn to pruning to cut down on the predictors the tree tries to split on. To do this, we can take a look at the CP table, which will give us information as to the CP value that gives us the minimal error.</p>
+<pre><code>## [1] 0.006116208</code></pre>
+<p>It seems that the optimal cp value is 0.006116208, which is higher than our original cp=0. Hopefully, once we raise the cp value the resulting tree will be smaller and easier to interpret.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p>This is really interesting- and much easier to understand! We see, as in model1, that the dropoff_borough is an important branching factor. Just as the OneR grouped together Bronx, EWR, Queens, and unknown into one group, and Brooklyn, Manhattan into another, our “optimal” decision tree has decided this as its first branching factor. Something new I learned from the RateCodeID being the next branching factor was that rate codes 3 and 5 have overwhelmingly low rates of tipping over 15%. These rate codes correspond to “Newark” and “Negotiated fare.” However, rate codes 1 and 2 have over 50% rates of tipping over 15%, and they are “Standard Rate” and “JFK”, respectively. Interesting to see two set-fare airport rides in different groups!</p>
+<p>Finally, let’s look at the specificity and sensitivity of the pruned tree as compared to the original, unpruned tree.</p>
+<pre><code>## [1] &quot;Test sensitivity and specificity:&quot;</code></pre>
+<pre><code>## [1] 0.1253823</code></pre>
+<pre><code>## [1] 0.9628433</code></pre>
+<p>The sensitivity and specificity for the test set on the pruned tree is slightly better than that of the unpruned tree. However, it is important to note that the sensitivity (true positive rate) is quite low, while the specificity (true negative rate) is quite high. We don’t gain that much from pruning.</p>
+<p>Let’s get another view on this using an ROC curve.</p>
+<pre><code>## geom_label_repel: parse = FALSE, box.padding = 0.25, label.padding = 0.25, point.padding = 1e-06, label.r = 0.15, label.size = 0.25, min.segment.length = 0.5, arrow = NULL, na.rm = FALSE, force = 1, force_pull = 1, max.time = 0.5, max.iter = 10000, max.overlaps = 10, nudge_x = 0, nudge_y = 0, xlim = c(NA, NA), ylim = c(NA, NA), direction = both, seed = NA, verbose = FALSE
+## stat_identity: na.rm = FALSE
+## position_identity</code></pre>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b252973c848d36db8210" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-b252973c848d36db8210">{"x":{"data":[{"x":[1,1,1,1,1,1,1,1,1,1,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.996828752642706,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0.932346723044397,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"text":["fpr: 1.0000000<br />tpr: 0<br />threshold: 0.00","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.01","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.02","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.03","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.04","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.05","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.06","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.07","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.08","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.09","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.10","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.11","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.12","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.13","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.14","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.15","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.16","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.17","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.18","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.19","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.20","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.21","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.22","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.23","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.24","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.25","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.26","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.27","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.28","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.29","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.30","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.31","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.32","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.33","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.34","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.35","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.36","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.37","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.38","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.39","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.40","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.41","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.42","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.43","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.44","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.45","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.46","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.47","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.48","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.49","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.50","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.51","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.52","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.53","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.54","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.55","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.56","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.57","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.58","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.59","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.60","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.61","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.62","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.63","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.64","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.65","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.66","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.67","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.68","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.69","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.70","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.71","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.72","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.73","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.74","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.75","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.76","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.77","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.78","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.79","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.80","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.81","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.82","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.83","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.84","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.85","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.86","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.87","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.88","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.89","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.90","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.91","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.92","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.93","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.94","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.95","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.96","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.97","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.98","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.99","fpr: 0.0000000<br />tpr: 0<br />threshold: 1.00"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"frame":null},{"x":[1.15469048079103,0.88170070911292,0.882715745363384,1.08915237768088,0.99783636641223,0.919706647167914,1.13419862522278,0.816328713437542,0.987602335517295,1.01054997975007,1.17494860310408,0.820553434503473,1.18185297430328,1.09810451274107,1.12911143696702,0.751762017796956,0.770627818143204,1.01468005678917,0.811831494284071,1.2070451783512,0.883214177170977,1.00663049142177,1.09472120374276,0.787019398136273,1.1474271040207,1.16606904887895,0.92206583156085,1.05177486148032,1.21125151224269,1.0262319586037,1.16248306045609,0.98415826186838,0.790647654750593,0.759087766244285,0.881300473891407,0.747188460503914,0.818168753598094,0.968632519667246,0.967186640089586,0.980773307455912,0.808874276655935,0.868348346164659,1.14204468049875,0.758877502943598,0.858518260254733,0.855128436887845,1.0341343384499,1.06204552354954,0.905146182865942,0.914024579922775,0.920213048697556,0.805047620904738,0.792731265306579,0.726986860392722,1.05776902660924,0.772701897427546,1.17447855952393,1.03150945669237,1.03642267524462,0.805465271232756,0.933580742103154,1.11324665777116,1.18033497291814,1.09698490693896,1.12090865173574,0.855576788659314,1.02759900130528,0.847332210631216,-0.0806804446037859,0.152386748814024,0.0109307904494926,0.00916854199022055,-0.158855686895549,0.117072381079197,0.232240943354554,-0.0524342636344954,0.125622556777671,0.139730292954482,0.140776897314936,0.0963033367879689,-0.0547089913161471,0.0898600248619914,0.0507301813922822,0.193868536269292,-0.152648951043375,-0.068036483367905,-0.249011298874393,-0.201925611472689,-0.231296633719467,-0.0249566610436887,0.0277900164946914,0.170063643134199,-0.227490611956455,-0.233573881327175,0.160995058948174,-0.186696785618551,-0.0532344848616049,0.0213988509494811,0.117127902223729,0.0385565275792032,-0.18426021700725],"y":[-0.0102406271034852,0.223715257947333,0.0525926117552444,0.0540081190411001,0.13331390847452,-0.196981754619628,0.186242946656421,0.22194115514867,-0.135468349559233,0.0965035617118701,-0.116614792845212,-0.237536604516208,0.000954185845330358,-0.0131604062626138,0.171893754624762,-0.193141927011311,-0.0444614356383681,-0.223558743251488,0.208511676406488,0.173577547771856,0.0662327021127567,0.00942871847655624,0.0226521627046168,-0.0673261209158227,-0.199758175527677,-0.0342486036242917,-0.0305899034719914,0.00439106987323612,0.0365737940883264,-0.199421106022783,0.130325712147169,-0.0565003247465938,-0.0889803178142756,0.244492789497599,0.162051332066767,0.171347111812793,-0.0532780180219561,-0.127782484400086,0.0602032777387649,-0.157952181645669,0.102020045858808,-0.19519336160738,-0.0845638553146273,0.133407414657995,-0.157316320459358,0.143128689262085,0.200693820603192,0.13953105150722,-0.0797094592126086,-0.216403164668009,-0.0387437724275514,0.0511631839908659,0.166818865574896,0.0181963598588482,-0.186502948403358,-0.173999249236658,0.211484759231098,0.0457116360776126,-0.0675269814673811,0.0332810531836003,0.14192475611344,0.201013552374206,-0.145084996940568,-0.126044996781275,0.0300103412009776,-0.0660197463585064,-0.01071254350245,-0.210592551506124,0.122004534234293,0.0802988649811596,0.131013038218953,0.136768405209295,-0.179450825322419,0.0429552922723815,-0.184207570157014,-0.244259802973829,0.0467247542692348,0.145756785874255,-0.0226032315986231,-0.137908927630633,-0.0323504559928551,0.20680195861496,0.108740029041655,0.0770373977720737,-0.129228461883031,-0.169547329423949,0.240848532179371,0.154257707647048,0.0634369519539177,0.14083446143195,-0.0464852394070476,0.215488110785373,-0.176647536689416,-0.0535647533833981,-0.231978917028755,-0.178459567832761,0.0519259823486209,-0.235567660769448,-0.0362716761883348,0.219838339136913,-0.193227714044042],"text":["fpr: 1.0000000<br />tpr: 0<br />threshold: 0.00","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.01","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.02","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.03","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.04","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.05","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.06","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.07","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.08","fpr: 1.0000000<br />tpr: 0<br />threshold: 0.09","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.10","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.11","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.12","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.13","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.14","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.15","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.16","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.17","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.18","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.19","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.20","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.21","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.22","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.23","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.24","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.25","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.26","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.27","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.28","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.29","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.30","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.31","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.32","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.33","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.34","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.35","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.36","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.37","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.38","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.39","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.40","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.41","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.42","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.43","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.44","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.45","fpr: 0.9968288<br />tpr: 0<br />threshold: 0.46","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.47","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.48","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.49","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.50","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.51","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.52","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.53","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.54","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.55","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.56","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.57","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.58","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.59","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.60","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.61","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.62","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.63","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.64","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.65","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.66","fpr: 0.9323467<br />tpr: 0<br />threshold: 0.67","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.68","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.69","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.70","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.71","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.72","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.73","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.74","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.75","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.76","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.77","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.78","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.79","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.80","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.81","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.82","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.83","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.84","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.85","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.86","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.87","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.88","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.89","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.90","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.91","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.92","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.93","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.94","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.95","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.96","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.97","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.98","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.99","fpr: 0.0000000<br />tpr: 0<br />threshold: 1.00"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":3.77952755905512,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":48.9497716894977},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.322024439430247,1.28426465279854],"tickmode":"array","ticktext":["0.0","0.4","0.8","1.2"],"tickvals":[0,0.4,0.8,1.2],"categoryorder":"array","categoryarray":["0.0","0.4","0.8","1.2"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"fpr","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.268697432597401,0.26893041912117],"tickmode":"array","ticktext":["-0.2","-0.1","0.0","0.1","0.2"],"tickvals":[-0.2,-0.1,0,0.1,0.2],"categoryorder":"array","categoryarray":["-0.2","-0.1","0.0","0.1","0.2"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"tpr","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"17f1114c3b956":{"x":{},"y":{},"label":{},"type":"scatter"},"17f113dbcc7c0":{"x":{},"y":{},"label":{}},"17f1134de2dea":{"x":{},"y":{},"label":{}}},"cur_data":"17f1114c3b956","visdat":{"17f1114c3b956":["function (y) ","x"],"17f113dbcc7c0":["function (y) ","x"],"17f1134de2dea":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>This is a very interesting ROC curve. This seems to indicate that the predictions of the model that I used are just predicting 1 (tipped over 15%) with a probability of 67% for almost every row. The 67% reflects the proportion of the total dataset that tipped over 15%, so it seems that the constructed model isn’t very useful.</p>
 
 </div>
             </section>

@@ -4,17 +4,17 @@
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+## Data Wrangling
 ```{r}
 taxi_data <- read.csv('~/Desktop/2021_taxi_data.csv')
 ```
-My goal is to look into the factors that determine how people tip. To do this, I want to create a "tipped" column that is just a binary of whether or not somebody tipped at all. I also want to create a "tip" column that shows whether or not somebody tipped over 10% of the fare amount. 
-
-Note: initially, I tried to use 15% as the threshold. After doing some analysis on results and thinking about them, I decided that 10% would be a better threshold as it would indicate one tipping above a negligable amount. Usually, 15% is a pretty standard tip for some who meant to tip at all. 
+My goal is to look into the factors that determine how people tip. To do this, I want to create a "tipped" column that is just a binary of whether or not somebody tipped at all. I also want to create a "tip" column that shows whether or not somebody tipped over 15% of the fare amount. 
 
 ```{r}
 library(ggplot2)
 colSums(is.na(taxi_data))
 ```
+
 To understand the columns and what the values mean, I used this site:
 https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf
 
@@ -51,7 +51,9 @@ mean(!taxi_data$tip)
 # of the sampled data, 29.6% of rides were tipped under 10%.
 ```
 
-As we can see, of the sampled data, 27.1% of rides were NOT tipped and 29.6% of rides were tipped under 10% (including not tipped at all). Next, I want to get a general sense of the distribution of tip amounts and the distribution of fare amounts. 
+As we can see, of the sampled data, 27.1% of rides were NOT tipped and 29.6% of rides were tipped under 10% (including not tipped at all). 
+
+Next, I want to get a general sense of the distribution of tip amounts and the distribution of fare amounts. 
 
 ```{r}
 hist(taxi_data$fare_amount, main="Fare Amount", xlab="fare", breaks=20)
@@ -101,7 +103,7 @@ taxi_data <- taxi_data[taxi_data$duration < 120, ]
 
 In my exploration of the data, there were some values that seemed like outliers (rides that took multiple hours). I removed 11 of these rows from the data set. 
 
-Next, I want to create a categorical variable for the season in which the ride took place based on the pickup time. To do this, I will looked into this package: hydroTSM. Maybe the season in which the ride took place will impact the amount riders tip!
+Next, I want to create a categorical variable for the season in which the ride took place based on the pickup time. To do this, I looked into this package: hydroTSM. Maybe the season in which the ride took place will impact the amount riders tip!
 
 
 ```{r}
@@ -154,6 +156,7 @@ taxi_data$pickup_borough <- pickup_borough
 taxi_data$dropoff_borough <- dropoff_borough
 ```
 
+## Data Visualization
 Let's look at the relative frequencies of the passenger count.
 
 ```{r}

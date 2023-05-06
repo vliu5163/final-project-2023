@@ -1,11 +1,18 @@
-# [Model 3]
+# [Model 3: Random Forest]
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = TRUE, echo = FALSE)
 ```
 
-```{r cars}
+## Random Forest: PU/DOLocationID vs pickup/dropoff_borough
+```{r}
 taxi_data <- read.csv('data/2021_taxi_data_mod.csv')
+taxi_data$tip <- factor(taxi_data$tip)
+taxi_data$passenger_count <- factor(taxi_data$passenger_count)
+taxi_data$VendorID <- factor(taxi_data$VendorID)
+taxi_data$RatecodeID <- factor(taxi_data$RatecodeID)
+taxi_data$high_fare <- factor(taxi_data$high_fare)
+taxi_data$payment_type <- factor(taxi_data$payment_type)
 ```
 
 ```{r}
@@ -15,7 +22,6 @@ library(tidyverse)
 taxi_data <- taxi_data[!is.na(taxi_data$passenger_count),]
 ```
 
-Split into test and train:
 
 ```{r}
 set.seed(5293)
@@ -23,49 +29,106 @@ n <- nrow(taxi_data)
 train <- sample(n, .8*n)
 train_dat <- taxi_data[train, ]
 test_dat <- taxi_data[-train, ]
-head(train_dat)
 ```
+
+In this model, I decided to try the original, raw PU/DOLocationID columns instead of the pickup/dropoff_borough columns I created and compare the performance of the two. PU/DOLocationID gives us the exact taxi zone from which passengers were picked up/dropped off (there are about 200 of these covered New York City), adding further granularity to the location information represented in the column, whereas pickup/dropoff_borough gives us the borough. The reason I originally chose to create pickup/dropoff_borough was that it gave us 5 easy to interpret categories; "Queens," "Manhattan," "Bronx" etc was much more understandable by a reader than taxi zones such as "192," "4," and "95" that give us no immediate information in where they are located geographically. Expanding to PU/DOLocationID will be more computationally heavy, since there are now 200 categories to deal with, but my hypothesis is that it will give the model a little more information to work with. 
 
 
 ```{r}
-# change to just tip/no tip
-
-train_dat$tip_01 <- factor(ifelse(train_dat$tip_percent < 0.01, 0, 1))
-test_dat$tip_01 <- factor(ifelse(test_dat$tip_percent < 0.01, 0, 1))
-
-mod <- randomForest(tip_01 ~ passenger_count + VendorID + RatecodeID + DOLocationID + PULocationID + season + high_fare, data = train_dat)
-mod
-mean(predict(mod, test_dat) == test_dat$tip_01)
+mod <- randomForest(tip ~ passenger_count + VendorID + RatecodeID + DOLocationID + PULocationID + season + high_fare + payment_type, data = train_dat)
+mean(predict(mod, test_dat) == test_dat$tip)
 ```
 
-To understand our random forest results, we first need to understand OOB (out of bag) estimate of error rate: at each split does some evaluation by splitting the data. The 25.9% number is a weighted average based on how many observations go through that node. 
+To understand our random forest results, we first need to understand OOB (out of bag) error. Each bagged tree uses about 2/3 of the observations, and the remaining 1/3 of observations is referred to as the out of bag observations. Since in this case we care about classification, we take the majority vote for each observation, in which each prediction is made using the 1/3 OOB observations. This is a valid estimate of the test error for the bagged model. The 11.77% number is a weighted average based on how many observations go through that node. Note: we can also confirm that it's a good estimate for error because the OOB estimate (11.77) + mean prediction accuracy (88.37) roughly equals 1. 
 
+So far it's also doing better than OneR and Decision Tree! The accuracy on the test data is 88.37%, which is considerably better than just guessing 1 for all the rows (which would yield about 67% accuracy).
+
+Next, I'd like to do the same model, replacing DULocationID with dropoff_borough and PULocationID with pickup_borough to see if my hypothesis is correct.
+
+```{r}
+mod2 <- randomForest(tip ~ passenger_count + VendorID + RatecodeID + dropoff_borough + pickup_borough + 
+                       season + high_fare + payment_type, data = train_dat,
+                     method = 'rf',
+               trControl = trainControl(method = 'cv',number = 5), 
+               importance = TRUE)
+plot(mod2)
+legend("top", colnames(mod2$err.rate),col=1:4,cex=0.8,fill=1:4)
+mean(predict(mod2, test_dat) == test_dat$tip)
+```
+
+The OOB error is 11.43% which is slightly better than the random forest using the location ID! The prediction accuracy on the test data is 88.79% which is also slightly better than when using the locationID. Looks like my hypothesis was incorrect- using just the borough as predictors worked just as well (in fact slightly better) than having the more granular location ID. Another possibility is that dropoff borough was not a very important predictor in the random forest model, so switching it out slightly didn't make much of an impact on the model accuracy.
+
+Looking at the plotted random forest model, we see that the error rate doesn't change after 30 trees, indicating that 30 trees is probably enough for our purposes. In terms of error, our error for classifications of 1 is quite low, whereas the error for classifications of 1 is quite high. This may again be indicative of the relative frequencies of 0's and 1's (the data is roughly 35% 0's and 65% 1's), so the model may be blanket classifying rows as 1 leading to high 0 classification error. 
+
+Next, let's take a look at the accuracy, sensitivity, and specificity.
+
+```{r}
+library(caret)
+test_predicted <- predict(mod2, test_dat, type = "class")
+test_pred <- table(test_predicted, test_dat$tip)
+print("Overall accuracy:")
+mean(predict(mod2, test_dat) == test_dat$tip)
+print("Test sensitivity and specificity:")
+sensitivity(test_pred)
+specificity(test_pred)
+```
+
+Let's also take a look at feature importance based on our random forest model.
+
+```{r}
+var.imp <- as.data.frame(mod2$importance)
+var.imp$feature <- rownames(var.imp) 
+g <- ggplot(var.imp, aes(x = feature, y=MeanDecreaseAccuracy)) + 
+  theme_bw() + geom_point() + 
+  theme(axis.text.x = element_text(angle=-40, hjust=.1)) + coord_flip() +
+  ggtitle("Feature Importance By Mean Decrease in Accuracy")
+library(plotly)
+ggplotly(g)
+```
+
+Just as my other models confirmed, payment_type is by far the best predictor, whereas the other predictors are hovering around the 0.0 line. After looking at 3 models that confirm this, it seems that taxi drivers should really start encouraging their customers to pay with card as often as possible!
+
+
+## Shapley Value Analysis
+
+I'd also like to look at the Shapley values. Shapley is a permutation method, looks at all combinations of features, which is costly in terms of computation. However, since I've decided not to use the 200+ categories for PU/DOLocationID (instead opting for the 5 category pickup/dropoff_borough), I think it's an appropriate thing to analyze. 
+
+Let's do 100 simulations to explain the 100th observation in the data!
 
 ```{r}
 pred <- function(model, newdata) {
-  predict(model, newdata = newdata, type = "prob")[, "tip"]
+  predict(model, newdata = newdata, type = "prob")
 }
 
 shap_values <- fastshap::explain(
-  mod, 
-  X = train_dat,           
-  feature_names = colnames(train_dat |> dplyr::select(passenger_count, VendorID, RatecodeID, dropoff_borough, season, high_fare)),
-  pred_wrapper = pred, 
-  nsim = 5, # increase as much as possible as long as doesn't take too long
-  newdata = train_dat[5,] # explains the 5th prediction
-  # can do range of rows if you want to use this to explain multiple observations
+  mod2,
+  X = train_dat,
+  feature_names = colnames(train_dat |> dplyr::select(passenger_count, VendorID, RatecodeID, 
+                                                      dropoff_borough, season, high_fare, payment_type)),
+  pred_wrapper = pred,
+  nsim = 100,
+  newdata = train_dat[100,]
 )
-```
+shap_values
 
+```
 
 ```{r}
-shap_values <- as_tibble(shap_values)
-shap_values
-mean(predict(mod, train_dat, type="prob")[,2])
+shap <- as.data.frame(shap_values) |>
+pivot_longer(everything(), names_to = "var", values_to = "shap_value")
+shap
+ggplot(shap, aes(x = shap_value, y = reorder(var, abs(shap_value)))) +
+  geom_col(aes(fill = factor(sign(shap_value)))) +
+  ylab("") +
+  theme_bw(12) +
+  theme(panel.grid.major.y = element_blank())
+
 ```
+From our shapley values, we can tell that payment type contributed the most positive values in the prediction for the 100th observation, whereas dropoff_borough contributed the most negative values in the prediction. Let's take a look at the 100th observation to see if the shapley values line up with what we'd expect!
 
-
-
-
+```{r}
+train_dat[100,]
+```
+We see that the payment_type was 1, or credit card, which we've established is indicative of a much higher rate of tipping. We also see that the dropoff borough is Manhattan. This is surprising, because from our OneR analysis we'd expect tha Manhattan dropoff would more likely be a tip percentage of >15%. However, when we look at our feature importance plot from earlier, we found that actually, dropoff borough isn't as important as it seems, and may not even be much more important than any of the other features. The passenger count is 1, vendorID is 1 (Creative Mobile Technologies), season is autumn, is not high_fare, and ratecodeID is 1 indicating standard rate. Overall, payment_type seems to contribute the most to the prediction which is in line with what we'd expect in our feature importance plot. 
 
 

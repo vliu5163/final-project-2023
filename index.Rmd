@@ -1,35 +1,38 @@
 --- 
-title: "Final Project Proposal"
+title: "NYC Yellow Taxi Tipping Patterns"
 author: "Vivian Liu"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
 
-# Proposal
+# Introduction
 
-The data:  
-2021 Yellow Taxi Trip Data (30M rows) 
+## Data
+In this project, I intend to use the 2021 Yellow Taxi Trip Data. I got the data from NYC's OpenData source, linked here: https://data.cityofnewyork.us/Transportation/2021-Yellow-Taxi-Trip-Data/m6nq-qud6.
+
+I want to use the tip information, given as a "tip amount" column, and divide it by the "fare amount" column in order to create a tip rate. I plan to use the other predictors in the data (such as time of ride, passenger count, etc) to predict whether or not a given rider (or riders) tipped over 15% on their ride. 
 
 
-The modeling goal: 
+## Modeling Goal 
 I’d like to use different column values (borough, time of day, weekend vs not weekend, payment type) to predict whether or not the rider gives the driver a tip. Since tip amount is a continuous variable, instead I could categorize this variable as more or less than 15% tip (compared with the fare amount).  
 
 
-The methods or models you intend to use (at least three):  
-I intend to use linear regression, k-nearest neighbors, and random forest. For k-nearest neighbors, I will probably use a variety of distance metrics between different rides, including cosine similarity, Euclidean distance, and Minkowski distance. For linear regression, I am curious to know which column will have the greatest effect on tip amount. I will regress against single variables, combinations of variables, and all variables to see which column explains the most variance in the results. Finally, I would like to use random forest for classification to classify trips as more or less than 15% tip. 
-Shapley value
+## Models
+I intend to use the following models:
 
-Use random forest to predict the amount of tip, given calendar and borough information
+* OneR
+* Decision Tree
+* Random Forest
+* Naive Bayes
 
-Shapley is a permutation method, looks at all combinations of features (costly in terms of computation)
-Fit linear model for SHAP by minimizing the loss function
+For each of these models, I will create visualizations to interpret my results, and ultimately produce accuracies and sensitivy/specifity values so as to be able to compare the models against each other in terms of prediction efficacy. 
 
 
-# Sources
+## Data Sources
 
 https://catalog.data.gov/dataset/nyc-taxi-zones
 https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf
-https://cran.r-project.org/web/packages/hydroTSM/index.html
+https://catalog.data.gov/dataset/nyc-taxi-zones
 
 
 

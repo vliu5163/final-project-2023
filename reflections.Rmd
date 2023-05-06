@@ -1,2 +1,35 @@
 # Reflections
 
+
+## Model Conclusions
+This was a very fun dataset to work with! It required quite a bit of cleaning and data wrangling in the beginning, but I got to create some fun columns that hopefully made the data easier to understand for someone new to the dataset. Some of the columns that I created included season (looking at the date the ride occured), pickup/dropoff_borough (cross-referenceing the taxi zone with its borough), and high_fare (is the fare over $20). 
+
+At the end of each model I created, I also looked into the sensitivity and specificity values so I could get another metric that I could compare different models against each other. Here, I've summarized the overall accuracy/sensitivity/specificity values.
+
+* OneR: 0.8826638 / 0.6210191 / 1
+* Decision Tree: 0.8837209 / 0.6697248 / 0.9983845
+* Random Forest: 0.8868922 / 0.6727829 / 1
+* Naive Bayes: 0.8879493 / 0.6788991 / 0.9983845
+
+In terms of model interpretability, I found that OneR and DecisionTree yielded the lowest accuracies (not by far at all), but were the easiest to interpret. On the other hand, RandomForest and Naive Bayes did very slightly better, but was harder to interpret the results. Although OneR and DecisionTree didn't do as well, I felt it was necessary to understand all of the models so I could get a holistic understanding of the important predictors of the data. 
+
+## Final Thoughts
+Overall, the models that I created worked alright to predict whether or not someone would tip over 15% or not. For all the models, I had an accuracy of around 88% that I wasn't able to make higher despite trying different combinations of features and adding features. There may be a few reasons for this, but I think the most important of the reasons was that the data did not actually give us an good information about the rider. Some information such as demographics, maybe yearly income, even personality were obviously not included for each ride, and these predictors may have been very helpful in predicting our outcome variable. Instead, we got information such as VendorID (one of 2 taxi companies represented in the data), whether or not the ride was on a tolled path, and the time at which it occurred. The closest approximation for demographic information might have been dropoff_borough, as the boroughs can be ranked on median income. dropoff_borough also happened to be an important predictor across the board for all of the models. 
+
+Another thing that was interesting was that when I tried using the original PU/DOLocationID columns in the models instead, the accuracy didn't go up even though the pickup/dropoff location information was more granular. The computation time went way up (since we went from 5 borough categories to around 200 taxi zone categories), but the accuracy didn't change much. 
+
+The data is probably very good for someone looking to start their own taxi company and wanting to look at trends in where/when rides occur, but in terms of predicting tipping pattern, the companies would need to start collecting demographic information about each ride which is quite impractical. Based on my analysis, my recommendation for taxi drivers in NYC is to encourage their riders to pay using card as often as possible!
+
+## References
+Here are a list of sources that I used to help me with my code and data interpretation:
+
+https://cran.r-project.org/web/packages/hydroTSM/index.html
+https://stackoverflow.com/questions/20328452/legend-for-random-forest-plot-in-r
+https://stat.ethz.ch/R-manual/R-devel/library/rpart/html/predict.rpart.html
+http://www.sthda.com/english/articles/35-statistical-machine-learning-essentials/141-cart-model-decision-tree-essentials/#:~:text=In%20rpart%20package%2C%20this%20is,to%20a%20too%20small%20tree.
+https://statinfer.com/203-4-2-calculating-sensitivity-and-specificity-in-r/
+https://algotech.netlify.app/blog/text-lime/
+
+
+
+An Introduction to Statistical Learning (James, Witten, Hastie, Tibshirani) pg. 342-343

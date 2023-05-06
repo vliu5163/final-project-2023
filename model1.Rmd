@@ -1,4 +1,4 @@
-# [Model 1]
+# [Model 1: OneR]
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -24,16 +24,52 @@ train <- sample(n, .8*n)
 train_dat <- taxi_data[train, ]
 test_dat <- taxi_data[-train, ]
 ```
-In this model, I decided to use a OneR model to see which of the features would be most "important" in minimizing prediction error. How it works is that for each predictor that I feed the model, it generates "one rule," and at the end it selects the rule that minimizes error. In this case, I decided to try pickup borough, dropoff borough, passenger count, high fare, season, rate code ID, and vendor ID. 
+In this model, I decided to use a OneR model to see which of the features would be most "important" in minimizing prediction error. How it works is that for each predictor that I feed the model, it generates "one rule," and at the end it selects the rule that minimizes error. In this case, I decided to try pickup borough, dropoff borough, passenger count, high fare, season, rate code ID, payment_type, and vendor ID. 
 
 * pickup borough/dropoff borough: I thought this may be important in that people whose destinations/origins are different boroughs may have different tipping habits.
 * passenger count: my hypothesis was that for rides with higher passenger counts, the tip might be higher. This was somewhat disproved in my EDA, but I wanted to include it in my OneR.
 * high fare: I wanted to see whether or not rides with higher fares may tip higher, or if rides with lower fares tip higher proportionally to the fare.
 * season: my hypothesis was that maybe rides in the winter (where it's less convenient to walk/take public transporation) may be tipped higher.
 * rate code ID: this represents different types of ride such as "standard" or rides to EWR/JFK. Maybe people who take rides with set fares (like those to the airports) consistently tip at 15-20% because they know exactly what to expect.
+* payment type: either credit, cash, no charge, void, or unknown. 
 * vendor ID: this data represents two different taxi companies. Maybe one has a consistently higher level of service corresponding to better tips for their drivers.
 
 Above, I've listed the reasons for why I included specific features. But as a reminder, OneR will only choose ONE of the above predictors as the one that minimizes error. We'll see which one does the best job when we run the model. 
+
+## With payment_type
+
+```{r}
+# one thing to note- I struggled for a bit before Professor Robbins reminded me that I needed to make my tip column nto a factor with 2 levels: 0 and 1!
+mod_payment <- OneR(factor(tip) ~ pickup_borough + dropoff_borough + passenger_count + high_fare + season + RatecodeID + payment_type + VendorID, data = train_dat)
+summary(mod_payment)
+plot(mod_payment)
+```
+Based on this plot, it seems that there's only payment type 1 (credit card) that seems to want to tip. I didn't expect this, but it somewhat makes sense. For example, at a coffee shop, I'm much more likely to tip when paying with a credit card since tapping the "15%" button on the screen is much easier than counting out change if I had paid with cash. Let's do some EDA regarding payment type to see how this is distributed in the data. 
+
+```{r}
+ggplot(train_dat, aes(payment_type, fill = factor(tip))) + geom_bar(position = "dodge") # contains rows with NAs
+```
+As we can see, those paying with cash didn't tip at 15% or higher at all, which was surprising! I guess it's hard to count out the exact tip by hand. Here, we can also see that the relative frequency of those paying with credit card was much higher than all other payment types combined. 
+
+Let's now take a look at the sensitivity, specificity, and overall accuracy of this model on the test data.
+
+```{r}
+library(caret)
+test_predicted_payment <- predict(mod_payment, test_dat, type = "class")
+test_pred_payment <- table(test_predicted_payment, test_dat$tip)
+test_pred_payment <- test_pred_payment[-3,]
+print("Overall accuracy:")
+mean(predict(mod_payment, test_dat) == test_dat$tip)
+print("Test sensitivity and specificity:")
+sensitivity(test_pred_payment)
+specificity(test_pred_payment)
+
+```
+
+
+## Without payment_type
+
+Since payment_type seems to be the most important predictor, I wanted to see what the next most important predictor would be. So I decided to make another OneR model, leaving out payment_type and see which predictor it would settle on. 
 
 ```{r}
 # one thing to note- I struggled for a bit before Professor Robbins reminded me that I needed to make my tip column nto a factor with 2 levels: 0 and 1!
@@ -61,4 +97,15 @@ Now that we've removed all the rows with NA, we see the same results that OneR s
 Based on the OneR analysis, it seems that dropoff borough is the most important in determining whether or not a rider will tip over 15% on their ride, and it categorizes at 66.7% accuracy. However, we already know that 65% of all rides are classified as over 15% tip so we're not sure how much information we're gaining. As we can see from the plot, there are 5 categories (Bronx, Brooklyn, Manhattan, Queens, and unknown borough). Riders who are picked up in Manhattan have the highest rate of tipping over 15%, and riders who are picked up from the Bronx have the lowest rate of tipping over 15%. This made sense intuitively when I looked up the median household income for the different boroughs after making this plot. Highest to lowest median income goes Manhattan, Staten Island, Queens, Brooklyn, then Bronx which is the same order for tipping >15% in this plot. 
 
 For each borough, it's showing the relative frequencies which shows that Manhattan has the most rides. It also shows very few data points for EWR, Bronx, and unknown. It's possible that those with fewer points would be skewed towards more 0's than 1's so that's something to keep in mind. 
+
+```{r}
+test_predicted_2 <- predict(mod, test_dat, type = "class")
+test_pred_2 <- table(test_predicted_2, test_dat$tip)
+test_pred_2 <- test_pred_2[-3,]
+print("Test sensitivity and specificity:")
+sensitivity(test_pred_2)
+specificity(test_pred_2)
+```
+
+This model, being very simplistic, has a very low sensitivity and a high specificity. The values are much lower when we exclude payment_type!
 

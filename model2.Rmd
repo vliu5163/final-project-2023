@@ -1,4 +1,4 @@
-# [Model 2]
+# [Model 2: Decision Tree]
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -14,15 +14,21 @@ library(dplyr)
 ```{r}
 taxi_data <- read.csv('data/2021_taxi_data_mod.csv')
 taxi_data$tip <- factor(taxi_data$tip)
+taxi_data$passenger_count <- factor(taxi_data$passenger_count)
+taxi_data$VendorID <- factor(taxi_data$VendorID)
+taxi_data$RatecodeID <- factor(taxi_data$RatecodeID)
+taxi_data$high_fare <- factor(taxi_data$high_fare)
+taxi_data$payment_type <- factor(taxi_data$payment_type)
 ```
 
 ```{r}
 taxi_data <- taxi_data[!is.na(taxi_data$passenger_count),]
 ```
 
-For my second model, I decided to try removing all rows with passenger counts that are NA. Miraculously, all NAs in the entire dataset disappeared! I will be using this set going forward. 
+## Decision Tree Pruning
+For my second model, I decided to a decision tree model so I can see which features the model decides to split on. I'd like to compare the features in this model with the features that OneR ranked as important, and see if they line up. In addition, I'd like to see a more granular breakdown of the distributions of tip conditioned on different predictors.
 
-Now, I want to split into test and train:
+First, I want to split into test and train.
 
 ```{r}
 set.seed(5293)
@@ -32,15 +38,131 @@ train_dat <- taxi_data[train, ]
 test_dat <- taxi_data[-train, ]
 ```
 
+
+
 ```{r}
 library(rpart)
 library(rpart.plot)
+library(ggparty)
 
-mod1 <- rpart(tip ~ passenger_count + VendorID + RatecodeID + dropoff_borough + season + high_fare, data = train_dat, 
+mod1 <- rpart(tip ~ passenger_count + VendorID + RatecodeID + dropoff_borough + season + 
+                high_fare + payment_type, data = train_dat, 
               method="class", 
               control=rpart.control(cp=0))
 # rpart.plot(mod1, main = "tip", under=TRUE)
-summary(mod1)
-plotcp(mod1)
+
+modp <- as.party(mod1)
+# cleaner plot using stuff from slides
+ggparty(modp) + 
+  geom_edge() +
+  geom_edge_label() +
+  geom_node_label(aes(label = splitvar), ids = "inner") +
+  geom_node_plot(gglist = list(geom_bar(aes(x="", fill=tip),
+                                        position=position_fill()),
+                               xlab("tip")))
 ```
+For the same reasons as in model1, I decided to choose passenger_count, VendorID, RatecodeID, dropoff_borough, season, and high_fare as my predictors for my decision tree. However, this time I would also like to see if payment type has any influence on this as well. The different payment types are cash, credit, no charge, disputed, unknown, and void. These are categorical variables with easily interpretable meanings, so I decided to keep these as my predictors. 
+
+This is our initial tree with maximum depth (CP=0), which is the maximum fitting we can do (with no pruning). As we can tell, it's not very interpretable, as it splits on many variables and is very hard to understand. Before we try some pruning, let's look at the accuracy of this model.
+
+```{r}
+library(caret)
+
+test_tree <- rpart(tip ~ passenger_count + VendorID + RatecodeID + dropoff_borough + season + 
+                     high_fare + payment_type,
+                   data = test_dat, method = "class", control = rpart.control(cp = 0))
+test_predicted <- predict(mod1, test_dat, type = "class")
+test_pred <- table(test_predicted, test_dat$tip)
+print("Test sensitivity and specificity:")
+sensitivity(test_pred)
+specificity(test_pred)
+```
+
+The sensitivity is not great, but the specificity is pretty good. order to create a more useful model for us, we can turn to pruning to cut down on the predictors the tree tries to split on. To do this, we can take a look at the CP table, which will give us information as to the CP value that gives us the minimal error. 
+ 
+```{r}
+cptable <- test_tree$cptable
+optimal_cp <- cptable[which.min(cptable[,"xerror"]), "CP"]
+optimal_cp
+```
+
+It seems that the optimal cp value is 0.001529052, which is higher than our original cp=0. Hopefully, once we raise the cp value the resulting tree will be smaller and easier to interpret.
+
+```{r}
+mod2 <- rpart(tip ~ passenger_count + VendorID + RatecodeID + dropoff_borough + season + 
+                high_fare + payment_type, data = train_dat, 
+              method="class", 
+              control=rpart.control(cp= optimal_cp))
+
+mod2p <- as.party(mod2)
+# cleaner plot using stuff from slides
+ggparty(mod2p) + 
+  geom_edge() +
+  geom_edge_label() +
+  geom_node_label(aes(label = splitvar), ids = "inner") +
+  geom_node_plot(gglist = list(geom_bar(aes(x="", fill=tip),
+                                        position=position_fill()),
+                               xlab("tip")))
+```
+
+This is really interesting- and much easier to understand! Now that we include payment type, we see that credit card rides are overwhelmingly tipped oer 15%. This confirms what we discovered in the OneR model. On the other side, it seems that "cash, no charge, or dispute" was overwhelmingly tipped under 15%. If we keep going on the right side branch, high_fare is quite important. We also see that the dropoff_borough is not as important of a branching factor as in the OneR model. The OneR grouped together Bronx, EWR, Queens, and unknown into one group, and Brooklyn, Manhattan into another, whereas our "optimal" decision tree has decided this as a later branching factor with a different combination. 
+
+Finally, let's look at the accuracy, specificity, and sensitivity of the pruned tree as compared to the original unpruned tree. 
+
+```{r}
+test_predicted_2 <- predict(mod2, test_dat, type = "class")
+test_pred_2 <- table(test_predicted_2, test_dat$tip)
+print("Overall accuracy:")
+mean(predict(mod2, test_dat) != test_dat$tip)
+print("Test sensitivity and specificity:")
+sensitivity(test_pred_2)
+specificity(test_pred_2)
+```
+
+The sensitivity and specificity for the test set on the pruned tree is very slightly better than that of the unpruned tree. However, it is important to note that the sensitivity (true positive rate) is still quite low, while the specificity (true negative rate) is quite high. We don't gain that much from pruning.
+
+## ROC "Curve"
+Let's get another view on this using an ROC curve.
+
+```{r}
+library(purrr)
+test_pred_2 <- predict(mod2, test_dat, type = "prob")[,2]
+
+get_rates <- function(threshold, actual, response) {
+  predicted <- ifelse(response < threshold, 0, 1)
+  TP <- sum(actual == 1 & predicted == 1)
+  FP <- sum(actual == 0 & predicted == 1)
+  TN <- sum(actual == 0 & predicted == 0)
+  FN <- sum(actual == 1 & predicted == 0)
+  if(TP+FN == 0) {
+    FN = 1
+  }
+
+  tpr <- TP/(TP + FN)
+  fpr <- FP/(TN + FP)  
+
+  data.frame(threshold, tpr, fpr)
+}
+
+actual <- ifelse(test_dat$tip == "tip", 1, 0)
+response <- test_pred_2
+
+df <- map_df(seq(0, 1, 0.01), get_rates, actual, response)
+
+library(ggrepel)
+library(plotly)
+set.seed(52)
+df <- df |> mutate(label = ifelse(threshold %in% c(0, 1, .1), threshold, NA))
+
+g <- ggplot(df, aes(x=fpr, y=tpr, label=threshold)) +
+  geom_point() +
+  geom_jitter(size=1, width=.25, height=.25) +
+  geom_path() 
+  geom_label_repel(color="blue", size=2)
+
+plotly::ggplotly(g)
+
+```
+
+This is a very interesting ROC curve. This seems to indicate that the predictions of the model that I used are just predicting 1 (tipped over 15%) with a probability of 67% for almost every row. The 67% reflects the proportion of the total dataset that tipped over 15%, so it seems that the constructed model isn't very useful. 
 
