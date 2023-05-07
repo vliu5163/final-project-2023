@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 [Model 1: OneR] | NYC Yellow Taxi Tipping Patterns</title>
+  <meta name="description" content="Chapter 3 [Model 1: OneR] | NYC Yellow Taxi Tipping Patterns" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 [Model 1: OneR] | NYC Yellow Taxi Tipping Patterns" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 [Model 1: OneR] | NYC Yellow Taxi Tipping Patterns" />
+  
+  
+  
+
+<meta name="author" content="Vivian Liu" />
+
+
+<meta name="date" content="2023-05-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="exploration.html"/>
+<link rel="next" href="model-2-decision-tree.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">FINAL</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#data"><i class="fa fa-check"></i><b>1.1</b> Data</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#modeling-goal"><i class="fa fa-check"></i><b>1.2</b> Modeling Goal</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#models"><i class="fa fa-check"></i><b>1.3</b> Models</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#data-sources"><i class="fa fa-check"></i><b>1.4</b> Data Sources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i><b>2</b> Exploration</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="exploration.html"><a href="exploration.html#data-wrangling"><i class="fa fa-check"></i><b>2.1</b> Data Wrangling</a></li>
+<li class="chapter" data-level="2.2" data-path="exploration.html"><a href="exploration.html#data-visualization"><i class="fa fa-check"></i><b>2.2</b> Data Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="model-1-oner.html"><a href="model-1-oner.html"><i class="fa fa-check"></i><b>3</b> [Model 1: OneR]</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="model-1-oner.html"><a href="model-1-oner.html#with-payment_type"><i class="fa fa-check"></i><b>3.1</b> With payment_type</a></li>
+<li class="chapter" data-level="3.2" data-path="model-1-oner.html"><a href="model-1-oner.html#without-payment_type"><i class="fa fa-check"></i><b>3.2</b> Without payment_type</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="model-2-decision-tree.html"><a href="model-2-decision-tree.html"><i class="fa fa-check"></i><b>4</b> [Model 2: Decision Tree]</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="model-2-decision-tree.html"><a href="model-2-decision-tree.html#decision-tree-pruning"><i class="fa fa-check"></i><b>4.1</b> Decision Tree Pruning</a></li>
+<li class="chapter" data-level="4.2" data-path="model-2-decision-tree.html"><a href="model-2-decision-tree.html#roc-curve"><i class="fa fa-check"></i><b>4.2</b> ROC “Curve”</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="model-3-random-forest.html"><a href="model-3-random-forest.html"><i class="fa fa-check"></i><b>5</b> [Model 3: Random Forest]</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="model-3-random-forest.html"><a href="model-3-random-forest.html#random-forest-pudolocationid-vs-pickupdropoff_borough"><i class="fa fa-check"></i><b>5.1</b> Random Forest: PU/DOLocationID vs pickup/dropoff_borough</a></li>
+<li class="chapter" data-level="5.2" data-path="model-3-random-forest.html"><a href="model-3-random-forest.html#shapley-value-analysis"><i class="fa fa-check"></i><b>5.2</b> Shapley Value Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model-4-naive-bayes.html"><a href="model-4-naive-bayes.html"><i class="fa fa-check"></i><b>6</b> [Model 4: Naive Bayes]</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="model-4-naive-bayes.html"><a href="model-4-naive-bayes.html#naive-bayes-model"><i class="fa fa-check"></i><b>6.1</b> Naive Bayes Model</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="reflections.html"><a href="reflections.html"><i class="fa fa-check"></i><b>7</b> Reflections</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="reflections.html"><a href="reflections.html#model-conclusions"><i class="fa fa-check"></i><b>7.1</b> Model Conclusions</a></li>
+<li class="chapter" data-level="7.2" data-path="reflections.html"><a href="reflections.html#final-thoughts"><i class="fa fa-check"></i><b>7.2</b> Final Thoughts</a></li>
+<li class="chapter" data-level="7.3" data-path="reflections.html"><a href="reflections.html#references"><i class="fa fa-check"></i><b>7.3</b> References</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">NYC Yellow Taxi Tipping Patterns</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="model-1-oner" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> [Model 1: OneR]<a href="model-1-oner.html#model-1-oner" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Split into test and train:</p>
+<p>In this model, I decided to use a OneR model to see which of the features would be most “important” in minimizing prediction error. How it works is that for each predictor that I feed the model, it generates “one rule,” and at the end it selects the rule that minimizes error. In this case, I decided to try pickup borough, dropoff borough, passenger count, high fare, season, rate code ID, payment_type, and vendor ID.</p>
+<ul>
+<li>pickup borough/dropoff borough: I thought this may be important in that people whose destinations/origins are different boroughs may have different tipping habits.</li>
+<li>passenger count: my hypothesis was that for rides with higher passenger counts, the tip might be higher. This was somewhat disproved in my EDA, but I wanted to include it in my OneR.</li>
+<li>high fare: I wanted to see whether or not rides with higher fares may tip higher, or if rides with lower fares tip higher proportionally to the fare.</li>
+<li>season: my hypothesis was that maybe rides in the winter (where it’s less convenient to walk/take public transporation) may be tipped higher.</li>
+<li>rate code ID: this represents different types of ride such as “standard” or rides to EWR/JFK. Maybe people who take rides with set fares (like those to the airports) consistently tip at 15-20% because they know exactly what to expect.</li>
+<li>payment type: either credit, cash, no charge, void, or unknown.</li>
+<li>vendor ID: this data represents two different taxi companies. Maybe one has a consistently higher level of service corresponding to better tips for their drivers.</li>
+</ul>
+<p>Above, I’ve listed the reasons for why I included specific features. But as a reminder, OneR will only choose ONE of the above predictors as the one that minimizes error. We’ll see which one does the best job when we run the model.</p>
+<div id="with-payment_type" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> With payment_type<a href="model-1-oner.html#with-payment_type" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>## 
+## Call:
+## OneR.formula(formula = factor(tip) ~ pickup_borough + dropoff_borough + 
+##     passenger_count + high_fare + season + RatecodeID + payment_type + 
+##     VendorID, data = train_dat)
+## 
+## Rules:
+## If payment_type = 1 then factor(tip) = 1
+## If payment_type = 2 then factor(tip) = 0
+## If payment_type = 3 then factor(tip) = 0
+## If payment_type = 4 then factor(tip) = 0
+## 
+## Accuracy:
+## 3351 of 3783 instances classified correctly (88.58%)
+## 
+## Contingency table:
+##            payment_type
+## factor(tip)      1     2    3   4  Sum
+##         0      432 * 837 * 17 * 7 1293
+##         1   * 2490     0    0   0 2490
+##         Sum   2922   837   17   7 3783
+## ---
+## Maximum in each column: &#39;*&#39;
+## 
+## Pearson&#39;s Chi-squared test:
+## X-squared = 2146.6, df = 3, p-value &lt; 2.2e-16</code></pre>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-25-1.png" width="672" />
+Based on this plot, it seems that there’s only payment type 1 (credit card) that seems to want to tip. I didn’t expect this, but it somewhat makes sense. For example, at a coffee shop, I’m much more likely to tip when paying with a credit card since tapping the “15%” button on the screen is much easier than counting out change if I had paid with cash. Let’s do some EDA regarding payment type to see how this is distributed in the data.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+As we can see, those paying with cash didn’t tip at 15% or higher at all, which was surprising! I guess it’s hard to count out the exact tip by hand. Here, we can also see that the relative frequency of those paying with credit card was much higher than all other payment types combined.</p>
+<p>Let’s now take a look at the sensitivity, specificity, and overall accuracy of this model on the test data.</p>
+<pre><code>## [1] &quot;Overall accuracy:&quot;</code></pre>
+<pre><code>## [1] 0.8316532</code></pre>
+<pre><code>## [1] &quot;Test sensitivity and specificity:&quot;</code></pre>
+<pre><code>## [1] 0.6210191</code></pre>
+<pre><code>## [1] 1</code></pre>
+</div>
+<div id="without-payment_type" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Without payment_type<a href="model-1-oner.html#without-payment_type" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Since payment_type seems to be the most important predictor, I wanted to see what the next most important predictor would be. So I decided to make another OneR model, leaving out payment_type and see which predictor it would settle on.</p>
+<pre><code>## 
+## Call:
+## OneR.formula(formula = factor(tip) ~ pickup_borough + dropoff_borough + 
+##     passenger_count + high_fare + season + RatecodeID + VendorID, 
+##     data = train_dat)
+## 
+## Rules:
+## If dropoff_borough = Bronx     then factor(tip) = 0
+## If dropoff_borough = Brooklyn  then factor(tip) = 1
+## If dropoff_borough = EWR       then factor(tip) = 0
+## If dropoff_borough = Manhattan then factor(tip) = 1
+## If dropoff_borough = Queens    then factor(tip) = 1
+## If dropoff_borough = unknown   then factor(tip) = 0
+## 
+## Accuracy:
+## 2524 of 3783 instances classified correctly (66.72%)
+## 
+## Contingency table:
+##            dropoff_borough
+## factor(tip) Bronx Brooklyn EWR Manhattan Queens unknown  Sum
+##         0    * 29       60 * 3      1099     83    * 19 1293
+##         1       4     * 76   1    * 2305   * 92      12 2490
+##         Sum    33      136   4      3404    175      31 3783
+## ---
+## Maximum in each column: &#39;*&#39;
+## 
+## Pearson&#39;s Chi-squared test:
+## X-squared = 80.442, df = 5, p-value = 6.782e-16</code></pre>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<pre><code>## [1] 0.6596067</code></pre>
+<pre><code>## [1] 0.6673387</code></pre>
+<p>Interestingly, I have an accuracy of 66% for the training data, and an even higher accuracy of 66.7% for the test data. Compared to an overall frequency of 64.8% for tipped &gt; 15%, this doesn’t seem like that much of an information gain and the test accuracy being higher is a little odd.</p>
+<p>Something interesting came up with the OneR function as I was running this. I noticed that for the Brooklyn column, OneR classified it as 1 when from my explorations, I knew that Brooklyn should have been classified as 0 since there were more instances of 0 than 1 in the data.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+As we can see, the relative frequencies for Brooklyn were 88 for 0 and 86 for 1, which means that OneR should have classified Brooklyn as 0 instead of 1 as it did in the model. However, OneR said there were 60 instances of 0 and 76 instances of 1 in the data. Why were some of the data points missing?</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>Now that we’ve removed all the rows with NA, we see the same results that OneR showed in the summary. It turns out this was all because the OneR function has been tossing any rows with NAs in it. This was good to know, and maybe this should have been more clear in the documentation!</p>
+<p>Based on the OneR analysis, it seems that dropoff borough is the most important in determining whether or not a rider will tip over 15% on their ride, and it categorizes at 66.7% accuracy. However, we already know that 65% of all rides are classified as over 15% tip so we’re not sure how much information we’re gaining. As we can see from the plot, there are 5 categories (Bronx, Brooklyn, Manhattan, Queens, and unknown borough). Riders who are picked up in Manhattan have the highest rate of tipping over 15%, and riders who are picked up from the Bronx have the lowest rate of tipping over 15%. This made sense intuitively when I looked up the median household income for the different boroughs after making this plot. Highest to lowest median income goes Manhattan, Staten Island, Queens, Brooklyn, then Bronx which is the same order for tipping &gt;15% in this plot.</p>
+<p>For each borough, it’s showing the relative frequencies which shows that Manhattan has the most rides. It also shows very few data points for EWR, Bronx, and unknown. It’s possible that those with fewer points would be skewed towards more 0’s than 1’s so that’s something to keep in mind.</p>
+<pre><code>## [1] &quot;Test sensitivity and specificity:&quot;</code></pre>
+<pre><code>## [1] 0.03264095</code></pre>
+<pre><code>## [1] 0.9938931</code></pre>
+<p>This model, being very simplistic, has a very low sensitivity and a high specificity. The values are much lower when we exclude payment_type!</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="exploration.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="model-2-decision-tree.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vliu5163/final-project-2023/edit/main/model1.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/vliu5163/final-project-2023/blob/main/model1.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
