@@ -91,7 +91,7 @@ Just as my other models confirmed, payment_type is by far the best predictor, wh
 
 ## Shapley Value Analysis
 
-I'd also like to look at the Shapley values. Shapley is a permutation method, looks at all combinations of features, which is costly in terms of computation. However, since I've decided not to use the 200+ categories for PU/DOLocationID (instead opting for the 5 category pickup/dropoff_borough), I think it's an appropriate thing to analyze. 
+I'd also like to look at the Shapley values. It looks at the average contribution of a feature value to the prediction in different coalitions. Shapley is a permutation method, looks at all combinations of features, which is costly in terms of computation. However, since I've decided not to use the 200+ categories for PU/DOLocationID (instead opting for the 5 category pickup/dropoff_borough), I think it's an appropriate thing to analyze. 
 
 Let's do 100 simulations to explain the 100th observation in the data!
 

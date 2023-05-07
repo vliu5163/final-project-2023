@@ -50,3 +50,32 @@ specificity(test_pred)
 Interesting- this is the highest accuracy we've seen so far.
 
 
+##LIME Analysis
+
+LIME: Local Interpretable Model-agnostic Explanations. This fits a local model around a specific observation to explain why a black-box model (such as Naive Bayes) made the decision it did in classification. We'd like to look at a couple observations and look at the LIME visualization to get a deeper sense of how Naive Bayes worked behind the scenes.
+
+```{r}
+library(lime)
+model_type.naiveBayes <- function(x){
+  return("classification")
+}
+
+predict_model.naiveBayes <- function(x, newdata, type = "raw") {
+
+    # return classification probabilities only   
+    res <- predict(x, newdata, type = "raw") %>% as.data.frame()
+    
+    return(res)
+}
+
+test_dat_lime <- test_dat[sample(nrow(test_dat), 4),]
+test_dat_lime
+explainer <- lime(train_dat, as_classifier(nb_mod), bin_continuous = TRUE, quantile_bins = FALSE)
+
+explanation <- lime::explain(test_dat_lime, explainer, n_labels = 1, n_features = 4)
+
+explanation |> plot_features()
+
+```
+It seems that the top 4 feautures that contributed to the classification are payment_type, dropoff_borough, pickup_borough, and high_fare. Payment type is by far the most supportive of the classification type. Again, this is in line with what I discovered from my previous 3 models. In 3 of the 4 cases, the payment type is 1 (credit card), strongly supporting the classification 1 of the observation. In the 1 case in which the payment type is 2 (cash), it also strongly supports the classification of 0. In all 4 cases, the dropoff_borough is Manhattan. In the 3 cases in which the observation is classified as 1, this is supporting the classification, but in the one case in which the observation is classified as 0, this contradicts the classification. This supports the generalization that riders being dropped off in Manhattan tend to tip over 15%. 
+
