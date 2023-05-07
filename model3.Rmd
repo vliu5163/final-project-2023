@@ -124,11 +124,13 @@ ggplot(shap, aes(x = shap_value, y = reorder(var, abs(shap_value)))) +
   theme(panel.grid.major.y = element_blank())
 
 ```
+
 From our shapley values, we can tell that payment type contributed the most positive values in the prediction for the 100th observation, whereas dropoff_borough contributed the most negative values in the prediction. Let's take a look at the 100th observation to see if the shapley values line up with what we'd expect!
 
 ```{r}
 train_dat[100,]
 ```
+
 We see that the payment_type was 1, or credit card, which we've established is indicative of a much higher rate of tipping. We also see that the dropoff borough is Manhattan. This is surprising, because from our OneR analysis we'd expect tha Manhattan dropoff would more likely be a tip percentage of >15%. However, when we look at our feature importance plot from earlier, we found that actually, dropoff borough isn't as important as it seems, and may not even be much more important than any of the other features. The passenger count is 1, vendorID is 1 (Creative Mobile Technologies), season is autumn, is not high_fare, and ratecodeID is 1 indicating standard rate. Overall, payment_type seems to contribute the most to the prediction which is in line with what we'd expect in our feature importance plot. 
 
 

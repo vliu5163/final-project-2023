@@ -17,6 +17,7 @@ random-forest-pudolocationid-vs-pickupdropoff_borough
 shapley-value-analysis
 model-4-naive-bayes
 naive-bayes-model
+lime-analysis
 reflections
 model-conclusions
 final-thoughts

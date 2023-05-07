@@ -18,12 +18,13 @@ colSums(is.na(taxi_data))
 To understand the columns and what the values mean, I used this site:
 https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf
 
-It seems that most columns don't have NAs. The ones that do are passenger_count, VendorID, RatecodeID, payment_type, and congestion_surcharge. 
-Passenger_count: just remove the rows that don't have this value
-VendorID: replace NA with 0 to represent unknown
-RatecodeID: not sure
-payment_type: replace all NA with code 5 (unknown)
-congestion_surcharge: not sure
+It seems that most columns don't have NAs. The ones that do are passenger_count, VendorID, RatecodeID, payment_type, and congestion_surcharge.
+
+* Passenger_count: just remove the rows that don't have this value
+* VendorID: replace NA with 0 to represent unknown
+* RatecodeID: not sure
+* payment_type: replace all NA with code 5 (unknown)
+* congestion_surcharge: not sure
 
 ```{r}
 taxi_data["VendorID"][is.na(taxi_data["VendorID"])] <- 0
@@ -59,6 +60,7 @@ Next, I want to get a general sense of the distribution of tip amounts and the d
 hist(taxi_data$fare_amount, main="Fare Amount", xlab="fare", breaks=20)
 negative <- taxi_data[taxi_data$fare_amount < 0, ]
 ```
+
 This is odd- there seem to be some rides where the fare amount is negative (the taxi driver owes the passenger the fare amount). I did some research and attributed this to messy data, so I removed the negative fares and redid the histogram. 
 
 ```{r}
@@ -68,6 +70,7 @@ hist(taxi_data$fare_amount, main="Fare Amount", xlab="fare", breaks=40)
 # this is a problem because random forest will do REGRESSION instead of CLASSIFICATION
 # stringsAsFactors = TRUE
 ```
+
 We see that most fares seem to be around \$5-20. I'd like to make a categorical variable for rides over and under \$20.
 
 ```{r}
@@ -80,6 +83,7 @@ So around 14.4% of all rides are over $20.
 ```{r}
 hist(taxi_data$tip_amount, main="Tip Amount", xlab="tip", breaks=20)
 ```
+
 We see a spike at 0 representing the proportion of rides that weren't tipped at all. Generally, we see that most rides are tipped between the $0-5 range. 
 
 ```{r}
@@ -173,6 +177,7 @@ ggplot(taxi_data, aes(x=passenger_count, y=tip_percent)) +
   ylim(0, 1) +
   coord_flip()
 ```
+
 This is interesting- there doesn't seem to be much of a trend in passenger count vs tip percentage. 
 
 ```{r}
@@ -189,6 +194,7 @@ library(forcats)
 ggplot(taxi_data, aes(fct_infreq(dropoff_borough), fill=factor(tip))) +
   geom_bar(position="dodge")
 ```
+
 At this point in my iterations, I've created all the new categorical variables I'd like to create for my data analysis. 
 
 ```{r}
