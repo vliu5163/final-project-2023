@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Model 2: Decision Tree | NYC Yellow Taxi Tipping Patterns</title>
+  <meta name="description" content="Chapter 4 Model 2: Decision Tree | NYC Yellow Taxi Tipping Patterns" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Model 2: Decision Tree | NYC Yellow Taxi Tipping Patterns" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Model 2: Decision Tree | NYC Yellow Taxi Tipping Patterns" />
+  
+  
+  
+
+<meta name="author" content="Vivian Liu" />
+
+
+<meta name="date" content="2023-05-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="model-1-oner.html"/>
+<link rel="next" href="model-3-random-forest.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">NYC Yellow Taxi Tipping</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#data"><i class="fa fa-check"></i><b>1.1</b> Data</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#modeling-goal"><i class="fa fa-check"></i><b>1.2</b> Modeling Goal</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#models"><i class="fa fa-check"></i><b>1.3</b> Models</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#data-sources"><i class="fa fa-check"></i><b>1.4</b> Data Sources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i><b>2</b> Exploration</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="exploration.html"><a href="exploration.html#data-wrangling"><i class="fa fa-check"></i><b>2.1</b> Data Wrangling</a></li>
+<li class="chapter" data-level="2.2" data-path="exploration.html"><a href="exploration.html#data-visualization"><i class="fa fa-check"></i><b>2.2</b> Data Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="model-1-oner.html"><a href="model-1-oner.html"><i class="fa fa-check"></i><b>3</b> Model 1: OneR</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="model-1-oner.html"><a href="model-1-oner.html#with-payment_type"><i class="fa fa-check"></i><b>3.1</b> With payment_type</a></li>
+<li class="chapter" data-level="3.2" data-path="model-1-oner.html"><a href="model-1-oner.html#without-payment_type"><i class="fa fa-check"></i><b>3.2</b> Without payment_type</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="model-2-decision-tree.html"><a href="model-2-decision-tree.html"><i class="fa fa-check"></i><b>4</b> Model 2: Decision Tree</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="model-2-decision-tree.html"><a href="model-2-decision-tree.html#decision-tree-pruning"><i class="fa fa-check"></i><b>4.1</b> Decision Tree Pruning</a></li>
+<li class="chapter" data-level="4.2" data-path="model-2-decision-tree.html"><a href="model-2-decision-tree.html#roc-curve"><i class="fa fa-check"></i><b>4.2</b> ROC “Curve”</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="model-3-random-forest.html"><a href="model-3-random-forest.html"><i class="fa fa-check"></i><b>5</b> Model 3: Random Forest</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="model-3-random-forest.html"><a href="model-3-random-forest.html#random-forest-pudolocationid-vs-pickupdropoff_borough"><i class="fa fa-check"></i><b>5.1</b> Random Forest: PU/DOLocationID vs pickup/dropoff_borough</a></li>
+<li class="chapter" data-level="5.2" data-path="model-3-random-forest.html"><a href="model-3-random-forest.html#shapley-value-analysis"><i class="fa fa-check"></i><b>5.2</b> Shapley Value Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model-4-naive-bayes.html"><a href="model-4-naive-bayes.html"><i class="fa fa-check"></i><b>6</b> Model 4: Naive Bayes</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="model-4-naive-bayes.html"><a href="model-4-naive-bayes.html#naive-bayes-model"><i class="fa fa-check"></i><b>6.1</b> Naive Bayes Model</a></li>
+<li class="chapter" data-level="6.2" data-path="model-4-naive-bayes.html"><a href="model-4-naive-bayes.html#lime-analysis"><i class="fa fa-check"></i><b>6.2</b> LIME Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="reflections.html"><a href="reflections.html"><i class="fa fa-check"></i><b>7</b> Reflections</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="reflections.html"><a href="reflections.html#model-conclusions"><i class="fa fa-check"></i><b>7.1</b> Model Conclusions</a></li>
+<li class="chapter" data-level="7.2" data-path="reflections.html"><a href="reflections.html#final-thoughts"><i class="fa fa-check"></i><b>7.2</b> Final Thoughts</a></li>
+<li class="chapter" data-level="7.3" data-path="reflections.html"><a href="reflections.html#references"><i class="fa fa-check"></i><b>7.3</b> References</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">NYC Yellow Taxi Tipping Patterns</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="model-2-decision-tree" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Model 2: Decision Tree<a href="model-2-decision-tree.html#model-2-decision-tree" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="decision-tree-pruning" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Decision Tree Pruning<a href="model-2-decision-tree.html#decision-tree-pruning" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For my second model, I decided to a decision tree model so I can see which features the model decides to split on. I’d like to compare the features in this model with the features that OneR ranked as important, and see if they line up. In addition, I’d like to see a more granular breakdown of the distributions of tip conditioned on different predictors.</p>
+<p>First, I want to split into test and train.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-38-1.png" width="672" />
+For the same reasons as in model1, I decided to choose passenger_count, VendorID, RatecodeID, dropoff_borough, season, and high_fare as my predictors for my decision tree. However, this time I would also like to see if payment type has any influence on this as well. The different payment types are cash, credit, no charge, disputed, unknown, and void. These are categorical variables with easily interpretable meanings, so I decided to keep these as my predictors.</p>
+<p>This is our initial tree with maximum depth (CP=0), which is the maximum fitting we can do (with no pruning). As we can tell, it’s not very interpretable, as it splits on many variables and is very hard to understand. Before we try some pruning, let’s look at the accuracy of this model.</p>
+<pre><code>## [1] &quot;Test sensitivity and specificity:&quot;</code></pre>
+<pre><code>## [1] 0.6697248</code></pre>
+<pre><code>## [1] 0.9919225</code></pre>
+<p>The sensitivity is not great, but the specificity is pretty good. order to create a more useful model for us, we can turn to pruning to cut down on the predictors the tree tries to split on. To do this, we can take a look at the CP table, which will give us information as to the CP value that gives us the minimal error.</p>
+<pre><code>## [1] 0.001529052</code></pre>
+<p>It seems that the optimal cp value is 0.001529052, which is higher than our original cp=0. Hopefully, once we raise the cp value the resulting tree will be smaller and easier to interpret.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p>This is really interesting- and much easier to understand! Now that we include payment type, we see that credit card rides are overwhelmingly tipped oer 15%. This confirms what we discovered in the OneR model. On the other side, it seems that “cash, no charge, or dispute” was overwhelmingly tipped under 15%. If we keep going on the right side branch, high_fare is quite important. We also see that the dropoff_borough is not as important of a branching factor as in the OneR model. The OneR grouped together Bronx, EWR, Queens, and unknown into one group, and Brooklyn, Manhattan into another, whereas our “optimal” decision tree has decided this as a later branching factor with a different combination.</p>
+<p>Finally, let’s look at the accuracy, specificity, and sensitivity of the pruned tree as compared to the original unpruned tree.</p>
+<pre><code>## [1] &quot;Overall accuracy:&quot;</code></pre>
+<pre><code>## [1] 0.8837209</code></pre>
+<pre><code>## [1] &quot;Test sensitivity and specificity:&quot;</code></pre>
+<pre><code>## [1] 0.6697248</code></pre>
+<pre><code>## [1] 0.9983845</code></pre>
+<p>The sensitivity and specificity for the test set on the pruned tree is very slightly better than that of the unpruned tree. However, it is important to note that the sensitivity (true positive rate) is still quite low, while the specificity (true negative rate) is quite high. We don’t gain that much from pruning.</p>
+</div>
+<div id="roc-curve" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> ROC “Curve”<a href="model-2-decision-tree.html#roc-curve" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s get another view on this using an ROC curve.</p>
+<pre><code>## geom_label_repel: parse = FALSE, box.padding = 0.25, label.padding = 0.25, point.padding = 1e-06, label.r = 0.15, label.size = 0.25, min.segment.length = 0.5, arrow = NULL, na.rm = FALSE, force = 1, force_pull = 1, max.time = 0.5, max.iter = 10000, max.overlaps = 10, nudge_x = 0, nudge_y = 0, xlim = c(NA, NA), ylim = c(NA, NA), direction = both, seed = NA, verbose = FALSE
+## stat_identity: na.rm = FALSE
+## position_identity</code></pre>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b252973c848d36db8210" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-b252973c848d36db8210">{"x":{"data":[{"x":[1,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.767441860465116,0.766384778012685,0.766384778012685,0.766384778012685,0.766384778012685,0.669133192389006,0.669133192389006,0.669133192389006,0.669133192389006,0.669133192389006,0.669133192389006,0.669133192389006,0.669133192389006,0.669133192389006,0.669133192389006,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"text":["fpr: 1.0000000<br />tpr: 0<br />threshold: 0.00","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.01","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.02","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.03","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.04","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.05","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.06","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.07","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.08","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.09","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.10","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.11","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.12","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.13","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.14","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.15","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.16","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.17","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.18","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.19","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.20","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.21","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.22","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.23","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.24","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.25","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.26","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.27","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.28","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.29","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.30","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.31","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.32","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.33","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.34","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.35","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.36","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.37","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.38","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.39","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.40","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.41","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.42","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.43","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.44","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.45","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.46","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.47","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.48","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.49","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.50","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.51","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.52","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.53","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.54","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.55","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.56","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.57","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.58","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.59","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.60","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.61","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.62","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.63","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.64","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.65","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.66","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.67","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.68","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.69","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.70","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.71","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.72","fpr: 0.7663848<br />tpr: 0<br />threshold: 0.73","fpr: 0.7663848<br />tpr: 0<br />threshold: 0.74","fpr: 0.7663848<br />tpr: 0<br />threshold: 0.75","fpr: 0.7663848<br />tpr: 0<br />threshold: 0.76","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.77","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.78","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.79","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.80","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.81","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.82","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.83","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.84","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.85","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.86","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.87","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.88","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.89","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.90","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.91","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.92","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.93","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.94","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.95","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.96","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.97","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.98","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.99","fpr: 0.0000000<br />tpr: 0<br />threshold: 1.00"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"frame":null},{"x":[1.15469048079103,0.649142569578036,0.650157605828501,0.856594238145992,0.765278226877346,0.68714850763303,0.901640485687896,0.583770573902659,0.755044195982411,0.777991840215183,0.945561710926488,0.591166542325884,0.952466082125686,0.868717620563477,0.899724544789426,0.522375125619366,0.541240925965614,0.785293164611577,0.582444602106481,0.977658286173611,0.653827284993387,0.777243599244177,0.865334311565168,0.557632505958683,0.91804021184311,0.936682156701356,0.69267893938326,0.822387969302728,0.9818646200651,0.796845066426105,0.9330961682785,0.75477136969079,0.561260762573003,0.529700874066695,0.651913581713818,0.517801568326324,0.588781861420504,0.739245627489656,0.737799747911997,0.751386415278323,0.579487384478345,0.638961453987069,0.912657788321159,0.529490610766008,0.629131368077144,0.625741544710256,0.804747446272306,0.897140660970255,0.740241320286661,0.749119717343494,0.755308186118274,0.640142758325457,0.627826402727298,0.56208199781344,0.892864164029963,0.607797034848265,1.00957369694465,0.866604594113089,0.871517812665335,0.640560408653475,0.768675879523873,0.948341795191884,1.01543011033886,0.932080044359684,0.956003789156459,0.690671926080033,0.862694138726003,0.682427348051935,0.68676141586133,0.91982860927914,0.778372650914609,0.776610402455337,0.608586173569567,0.883457159091882,0.998625721367239,0.71395051437819,0.892007334790356,0.808863485343489,0.809910089703942,0.765436529176975,0.614424201072859,0.758993217250998,0.719863373781289,0.863001728658299,0.516484241345632,0.601096709021101,0.420121893514613,-0.201925611472689,-0.231296633719467,-0.0249566610436887,0.0277900164946914,0.170063643134199,-0.227490611956455,-0.233573881327175,0.160995058948174,-0.186696785618551,-0.0532344848616049,0.0213988509494811,0.117127902223729,0.0385565275792032,-0.18426021700725],"y":[-0.0102406271034852,0.223715257947333,0.0525926117552444,0.0540081190411001,0.13331390847452,-0.196981754619628,0.186242946656421,0.22194115514867,-0.135468349559233,0.0965035617118701,-0.116614792845212,-0.237536604516208,0.000954185845330358,-0.0131604062626138,0.171893754624762,-0.193141927011311,-0.0444614356383681,-0.223558743251488,0.208511676406488,0.173577547771856,0.0662327021127567,0.00942871847655624,0.0226521627046168,-0.0673261209158227,-0.199758175527677,-0.0342486036242917,-0.0305899034719914,0.00439106987323612,0.0365737940883264,-0.199421106022783,0.130325712147169,-0.0565003247465938,-0.0889803178142756,0.244492789497599,0.162051332066767,0.171347111812793,-0.0532780180219561,-0.127782484400086,0.0602032777387649,-0.157952181645669,0.102020045858808,-0.19519336160738,-0.0845638553146273,0.133407414657995,-0.157316320459358,0.143128689262085,0.200693820603192,0.13953105150722,-0.0797094592126086,-0.216403164668009,-0.0387437724275514,0.0511631839908659,0.166818865574896,0.0181963598588482,-0.186502948403358,-0.173999249236658,0.211484759231098,0.0457116360776126,-0.0675269814673811,0.0332810531836003,0.14192475611344,0.201013552374206,-0.145084996940568,-0.126044996781275,0.0300103412009776,-0.0660197463585064,-0.01071254350245,-0.210592551506124,0.122004534234293,0.0802988649811596,0.131013038218953,0.136768405209295,-0.179450825322419,0.0429552922723815,-0.184207570157014,-0.244259802973829,0.0467247542692348,0.145756785874255,-0.0226032315986231,-0.137908927630633,-0.0323504559928551,0.20680195861496,0.108740029041655,0.0770373977720737,-0.129228461883031,-0.169547329423949,0.240848532179371,0.154257707647048,0.0634369519539177,0.14083446143195,-0.0464852394070476,0.215488110785373,-0.176647536689416,-0.0535647533833981,-0.231978917028755,-0.178459567832761,0.0519259823486209,-0.235567660769448,-0.0362716761883348,0.219838339136913,-0.193227714044042],"text":["fpr: 1.0000000<br />tpr: 0<br />threshold: 0.00","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.01","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.02","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.03","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.04","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.05","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.06","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.07","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.08","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.09","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.10","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.11","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.12","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.13","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.14","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.15","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.16","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.17","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.18","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.19","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.20","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.21","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.22","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.23","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.24","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.25","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.26","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.27","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.28","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.29","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.30","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.31","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.32","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.33","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.34","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.35","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.36","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.37","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.38","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.39","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.40","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.41","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.42","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.43","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.44","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.45","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.46","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.47","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.48","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.49","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.50","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.51","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.52","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.53","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.54","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.55","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.56","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.57","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.58","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.59","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.60","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.61","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.62","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.63","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.64","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.65","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.66","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.67","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.68","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.69","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.70","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.71","fpr: 0.7674419<br />tpr: 0<br />threshold: 0.72","fpr: 0.7663848<br />tpr: 0<br />threshold: 0.73","fpr: 0.7663848<br />tpr: 0<br />threshold: 0.74","fpr: 0.7663848<br />tpr: 0<br />threshold: 0.75","fpr: 0.7663848<br />tpr: 0<br />threshold: 0.76","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.77","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.78","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.79","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.80","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.81","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.82","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.83","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.84","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.85","fpr: 0.6691332<br />tpr: 0<br />threshold: 0.86","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.87","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.88","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.89","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.90","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.91","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.92","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.93","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.94","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.95","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.96","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.97","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.98","fpr: 0.0000000<br />tpr: 0<br />threshold: 0.99","fpr: 0.0000000<br />tpr: 0<br />threshold: 1.00"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":3.77952755905512,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":48.9497716894977},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.302987099433085,1.22410369889694],"tickmode":"array","ticktext":["0.0","0.4","0.8","1.2"],"tickvals":[0,0.4,0.8,1.2],"categoryorder":"array","categoryarray":["0.0","0.4","0.8","1.2"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"fpr","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.268697432597401,0.26893041912117],"tickmode":"array","ticktext":["-0.2","-0.1","0.0","0.1","0.2"],"tickvals":[-0.2,-0.1,0,0.1,0.2],"categoryorder":"array","categoryarray":["-0.2","-0.1","0.0","0.1","0.2"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"tpr","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"428f41fd38be":{"x":{},"y":{},"label":{},"type":"scatter"},"428f579863ca":{"x":{},"y":{},"label":{}},"428f55bf8fb3":{"x":{},"y":{},"label":{}}},"cur_data":"428f41fd38be","visdat":{"428f41fd38be":["function (y) ","x"],"428f579863ca":["function (y) ","x"],"428f55bf8fb3":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>This is a very interesting ROC curve. This seems to indicate that the predictions of the model that I used are just predicting 1 (tipped over 15%) with a probability of 67% for almost every row. The 67% reflects the proportion of the total dataset that tipped over 15%, so it seems that the constructed model isn’t very useful.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="model-1-oner.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="model-3-random-forest.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vliu5163/final-project-2023/edit/main/model2.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/vliu5163/final-project-2023/blob/main/model2.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

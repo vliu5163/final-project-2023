@@ -1,4 +1,4 @@
-# [Model 2: Decision Tree]
+# Model 2: Decision Tree
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)

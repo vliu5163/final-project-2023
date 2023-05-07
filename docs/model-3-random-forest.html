@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Model 3: Random Forest | NYC Yellow Taxi Tipping Patterns</title>
+  <meta name="description" content="Chapter 5 Model 3: Random Forest | NYC Yellow Taxi Tipping Patterns" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Model 3: Random Forest | NYC Yellow Taxi Tipping Patterns" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Model 3: Random Forest | NYC Yellow Taxi Tipping Patterns" />
+  
+  
+  
+
+<meta name="author" content="Vivian Liu" />
+
+
+<meta name="date" content="2023-05-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="model-2-decision-tree.html"/>
+<link rel="next" href="model-4-naive-bayes.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">NYC Yellow Taxi Tipping</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#data"><i class="fa fa-check"></i><b>1.1</b> Data</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#modeling-goal"><i class="fa fa-check"></i><b>1.2</b> Modeling Goal</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#models"><i class="fa fa-check"></i><b>1.3</b> Models</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#data-sources"><i class="fa fa-check"></i><b>1.4</b> Data Sources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i><b>2</b> Exploration</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="exploration.html"><a href="exploration.html#data-wrangling"><i class="fa fa-check"></i><b>2.1</b> Data Wrangling</a></li>
+<li class="chapter" data-level="2.2" data-path="exploration.html"><a href="exploration.html#data-visualization"><i class="fa fa-check"></i><b>2.2</b> Data Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="model-1-oner.html"><a href="model-1-oner.html"><i class="fa fa-check"></i><b>3</b> Model 1: OneR</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="model-1-oner.html"><a href="model-1-oner.html#with-payment_type"><i class="fa fa-check"></i><b>3.1</b> With payment_type</a></li>
+<li class="chapter" data-level="3.2" data-path="model-1-oner.html"><a href="model-1-oner.html#without-payment_type"><i class="fa fa-check"></i><b>3.2</b> Without payment_type</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="model-2-decision-tree.html"><a href="model-2-decision-tree.html"><i class="fa fa-check"></i><b>4</b> Model 2: Decision Tree</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="model-2-decision-tree.html"><a href="model-2-decision-tree.html#decision-tree-pruning"><i class="fa fa-check"></i><b>4.1</b> Decision Tree Pruning</a></li>
+<li class="chapter" data-level="4.2" data-path="model-2-decision-tree.html"><a href="model-2-decision-tree.html#roc-curve"><i class="fa fa-check"></i><b>4.2</b> ROC “Curve”</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="model-3-random-forest.html"><a href="model-3-random-forest.html"><i class="fa fa-check"></i><b>5</b> Model 3: Random Forest</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="model-3-random-forest.html"><a href="model-3-random-forest.html#random-forest-pudolocationid-vs-pickupdropoff_borough"><i class="fa fa-check"></i><b>5.1</b> Random Forest: PU/DOLocationID vs pickup/dropoff_borough</a></li>
+<li class="chapter" data-level="5.2" data-path="model-3-random-forest.html"><a href="model-3-random-forest.html#shapley-value-analysis"><i class="fa fa-check"></i><b>5.2</b> Shapley Value Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model-4-naive-bayes.html"><a href="model-4-naive-bayes.html"><i class="fa fa-check"></i><b>6</b> Model 4: Naive Bayes</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="model-4-naive-bayes.html"><a href="model-4-naive-bayes.html#naive-bayes-model"><i class="fa fa-check"></i><b>6.1</b> Naive Bayes Model</a></li>
+<li class="chapter" data-level="6.2" data-path="model-4-naive-bayes.html"><a href="model-4-naive-bayes.html#lime-analysis"><i class="fa fa-check"></i><b>6.2</b> LIME Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="reflections.html"><a href="reflections.html"><i class="fa fa-check"></i><b>7</b> Reflections</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="reflections.html"><a href="reflections.html#model-conclusions"><i class="fa fa-check"></i><b>7.1</b> Model Conclusions</a></li>
+<li class="chapter" data-level="7.2" data-path="reflections.html"><a href="reflections.html#final-thoughts"><i class="fa fa-check"></i><b>7.2</b> Final Thoughts</a></li>
+<li class="chapter" data-level="7.3" data-path="reflections.html"><a href="reflections.html#references"><i class="fa fa-check"></i><b>7.3</b> References</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">NYC Yellow Taxi Tipping Patterns</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="model-3-random-forest" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Model 3: Random Forest<a href="model-3-random-forest.html#model-3-random-forest" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="random-forest-pudolocationid-vs-pickupdropoff_borough" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Random Forest: PU/DOLocationID vs pickup/dropoff_borough<a href="model-3-random-forest.html#random-forest-pudolocationid-vs-pickupdropoff_borough" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this model, I decided to try the original, raw PU/DOLocationID columns instead of the pickup/dropoff_borough columns I created and compare the performance of the two. PU/DOLocationID gives us the exact taxi zone from which passengers were picked up/dropped off (there are about 200 of these covered New York City), adding further granularity to the location information represented in the column, whereas pickup/dropoff_borough gives us the borough. The reason I originally chose to create pickup/dropoff_borough was that it gave us 5 easy to interpret categories; “Queens,” “Manhattan,” “Bronx” etc was much more understandable by a reader than taxi zones such as “192,” “4,” and “95” that give us no immediate information in where they are located geographically. Expanding to PU/DOLocationID will be more computationally heavy, since there are now 200 categories to deal with, but my hypothesis is that it will give the model a little more information to work with.</p>
+<pre><code>## [1] 0.8837209</code></pre>
+<p>To understand our random forest results, we first need to understand OOB (out of bag) error. Each bagged tree uses about 2/3 of the observations, and the remaining 1/3 of observations is referred to as the out of bag observations. Since in this case we care about classification, we take the majority vote for each observation, in which each prediction is made using the 1/3 OOB observations. This is a valid estimate of the test error for the bagged model. The 11.77% number is a weighted average based on how many observations go through that node. Note: we can also confirm that it’s a good estimate for error because the OOB estimate (11.77) + mean prediction accuracy (88.37) roughly equals 1.</p>
+<p>So far it’s also doing better than OneR and Decision Tree! The accuracy on the test data is 88.37%, which is considerably better than just guessing 1 for all the rows (which would yield about 67% accuracy).</p>
+<p>Next, I’d like to do the same model, replacing DULocationID with dropoff_borough and PULocationID with pickup_borough to see if my hypothesis is correct.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<pre><code>## [1] 0.8879493</code></pre>
+<p>The OOB error is 11.43% which is slightly better than the random forest using the location ID! The prediction accuracy on the test data is 88.79% which is also slightly better than when using the locationID. Looks like my hypothesis was incorrect- using just the borough as predictors worked just as well (in fact slightly better) than having the more granular location ID. Another possibility is that dropoff borough was not a very important predictor in the random forest model, so switching it out slightly didn’t make much of an impact on the model accuracy.</p>
+<p>Looking at the plotted random forest model, we see that the error rate doesn’t change after 30 trees, indicating that 30 trees is probably enough for our purposes. In terms of error, our error for classifications of 1 is quite low, whereas the error for classifications of 1 is quite high. This may again be indicative of the relative frequencies of 0’s and 1’s (the data is roughly 35% 0’s and 65% 1’s), so the model may be blanket classifying rows as 1 leading to high 0 classification error.</p>
+<p>Next, let’s take a look at the accuracy, sensitivity, and specificity.</p>
+<pre><code>## [1] &quot;Overall accuracy:&quot;</code></pre>
+<pre><code>## [1] 0.8879493</code></pre>
+<pre><code>## [1] &quot;Test sensitivity and specificity:&quot;</code></pre>
+<pre><code>## [1] 0.6727829</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>Let’s also take a look at feature importance based on our random forest model.</p>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-743b381dd147475d36db" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-743b381dd147475d36db">{"x":{"data":[{"x":[-0.000332380759582141,0.000804767154649477,0.00489295911217836,0.0046002684646007,0.00441106413859812,0.000464941828205497,0.00542195467758908,0.265266804607153],"y":[3,8,6,1,5,7,2,4],"text":["feature: passenger_count<br />MeanDecreaseAccuracy: -0.0003323808","feature: VendorID<br />MeanDecreaseAccuracy:  0.0008047672","feature: RatecodeID<br />MeanDecreaseAccuracy:  0.0048929591","feature: dropoff_borough<br />MeanDecreaseAccuracy:  0.0046002685","feature: pickup_borough<br />MeanDecreaseAccuracy:  0.0044110641","feature: season<br />MeanDecreaseAccuracy:  0.0004649418","feature: high_fare<br />MeanDecreaseAccuracy:  0.0054219547","feature: payment_type<br />MeanDecreaseAccuracy:  0.2652668046"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":48.8284025267385,"l":113.24200913242},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Feature Importance By Mean Decrease in Accuracy","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0136123400279189,0.278546763875489],"tickmode":"array","ticktext":["0.0","0.1","0.2"],"tickvals":[0,0.1,0.2],"categoryorder":"array","categoryarray":["0.0","0.1","0.2"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":40,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"MeanDecreaseAccuracy","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,8.6],"tickmode":"array","ticktext":["dropoff_borough","high_fare","passenger_count","payment_type","pickup_borough","RatecodeID","season","VendorID"],"tickvals":[1,2,3,4,5,6,7,8],"categoryorder":"array","categoryarray":["dropoff_borough","high_fare","passenger_count","payment_type","pickup_borough","RatecodeID","season","VendorID"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"feature","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"428f4b86aa85":{"x":{},"y":{},"type":"scatter"}},"cur_data":"428f4b86aa85","visdat":{"428f4b86aa85":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>Just as my other models confirmed, payment_type is by far the best predictor, whereas the other predictors are hovering around the 0.0 line. After looking at 3 models that confirm this, it seems that taxi drivers should really start encouraging their customers to pay with card as often as possible!</p>
+</div>
+<div id="shapley-value-analysis" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Shapley Value Analysis<a href="model-3-random-forest.html#shapley-value-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>I’d also like to look at the Shapley values. It looks at the average contribution of a feature value to the prediction in different coalitions. Shapley is a permutation method, looks at all combinations of features, which is costly in terms of computation. However, since I’ve decided not to use the 200+ categories for PU/DOLocationID (instead opting for the 5 category pickup/dropoff_borough), I think it’s an appropriate thing to analyze.</p>
+<p>Let’s do 100 simulations to explain the 100th observation in the data!</p>
+<pre><code>## # A tibble: 1 × 7
+##   passenger_count VendorID RatecodeID dropoff_bor…¹    season high_fare paymen…²
+##             &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1       -3.48e-19 5.34e-18          0     -1.87e-17 -1.18e-17 -3.43e-19 1.64e-18
+## # … with abbreviated variable names ¹​dropoff_borough, ²​payment_type</code></pre>
+<pre><code>## # A tibble: 7 × 2
+##   var             shap_value
+##   &lt;chr&gt;                &lt;dbl&gt;
+## 1 passenger_count  -3.48e-19
+## 2 VendorID          5.34e-18
+## 3 RatecodeID        0       
+## 4 dropoff_borough  -1.87e-17
+## 5 season           -1.18e-17
+## 6 high_fare        -3.43e-19
+## 7 payment_type      1.64e-18</code></pre>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<p>From our shapley values, we can tell that payment type contributed the most positive values in the prediction for the 100th observation, whereas dropoff_borough contributed the most negative values in the prediction. Let’s take a look at the 100th observation to see if the shapley values line up with what we’d expect!</p>
+<pre><code>##       X.1        X VendorID   tpep_pickup_datetime  tpep_dropoff_datetime
+## 2204 2225 18305441        1 09/07/2021 02:12:41 PM 09/07/2021 02:20:42 PM
+##      passenger_count trip_distance RatecodeID store_and_fwd_flag PULocationID
+## 2204               1             1          1                  N          236
+##      DOLocationID payment_type fare_amount extra mta_tax tip_amount
+## 2204          237            1         7.5   2.5     0.5       2.15
+##      tolls_amount improvement_surcharge total_amount congestion_surcharge
+## 2204            0                   0.3        12.95                  2.5
+##      tipped tip_percent tip high_fare              pickup             dropoff
+## 2204      1   0.2866667   1         0 2021-09-07 14:12:41 2021-09-07 14:20:42
+##      duration season pickup_borough dropoff_borough
+## 2204 8.016667 autumm      Manhattan       Manhattan</code></pre>
+<p>We see that the payment_type was 1, or credit card, which we’ve established is indicative of a much higher rate of tipping. We also see that the dropoff borough is Manhattan. This is surprising, because from our OneR analysis we’d expect tha Manhattan dropoff would more likely be a tip percentage of &gt;15%. However, when we look at our feature importance plot from earlier, we found that actually, dropoff borough isn’t as important as it seems, and may not even be much more important than any of the other features. The passenger count is 1, vendorID is 1 (Creative Mobile Technologies), season is autumn, is not high_fare, and ratecodeID is 1 indicating standard rate. Overall, payment_type seems to contribute the most to the prediction which is in line with what we’d expect in our feature importance plot.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="model-2-decision-tree.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="model-4-naive-bayes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vliu5163/final-project-2023/edit/main/model3.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/vliu5163/final-project-2023/blob/main/model3.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

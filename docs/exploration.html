@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Exploration | NYC Yellow Taxi Tipping Patterns</title>
+  <meta name="description" content="Chapter 2 Exploration | NYC Yellow Taxi Tipping Patterns" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Exploration | NYC Yellow Taxi Tipping Patterns" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Exploration | NYC Yellow Taxi Tipping Patterns" />
+  
+  
+  
+
+<meta name="author" content="Vivian Liu" />
+
+
+<meta name="date" content="2023-05-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="model-1-oner.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">NYC Yellow Taxi Tipping</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#data"><i class="fa fa-check"></i><b>1.1</b> Data</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#modeling-goal"><i class="fa fa-check"></i><b>1.2</b> Modeling Goal</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#models"><i class="fa fa-check"></i><b>1.3</b> Models</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#data-sources"><i class="fa fa-check"></i><b>1.4</b> Data Sources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i><b>2</b> Exploration</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="exploration.html"><a href="exploration.html#data-wrangling"><i class="fa fa-check"></i><b>2.1</b> Data Wrangling</a></li>
+<li class="chapter" data-level="2.2" data-path="exploration.html"><a href="exploration.html#data-visualization"><i class="fa fa-check"></i><b>2.2</b> Data Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="model-1-oner.html"><a href="model-1-oner.html"><i class="fa fa-check"></i><b>3</b> Model 1: OneR</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="model-1-oner.html"><a href="model-1-oner.html#with-payment_type"><i class="fa fa-check"></i><b>3.1</b> With payment_type</a></li>
+<li class="chapter" data-level="3.2" data-path="model-1-oner.html"><a href="model-1-oner.html#without-payment_type"><i class="fa fa-check"></i><b>3.2</b> Without payment_type</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="model-2-decision-tree.html"><a href="model-2-decision-tree.html"><i class="fa fa-check"></i><b>4</b> Model 2: Decision Tree</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="model-2-decision-tree.html"><a href="model-2-decision-tree.html#decision-tree-pruning"><i class="fa fa-check"></i><b>4.1</b> Decision Tree Pruning</a></li>
+<li class="chapter" data-level="4.2" data-path="model-2-decision-tree.html"><a href="model-2-decision-tree.html#roc-curve"><i class="fa fa-check"></i><b>4.2</b> ROC “Curve”</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="model-3-random-forest.html"><a href="model-3-random-forest.html"><i class="fa fa-check"></i><b>5</b> Model 3: Random Forest</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="model-3-random-forest.html"><a href="model-3-random-forest.html#random-forest-pudolocationid-vs-pickupdropoff_borough"><i class="fa fa-check"></i><b>5.1</b> Random Forest: PU/DOLocationID vs pickup/dropoff_borough</a></li>
+<li class="chapter" data-level="5.2" data-path="model-3-random-forest.html"><a href="model-3-random-forest.html#shapley-value-analysis"><i class="fa fa-check"></i><b>5.2</b> Shapley Value Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model-4-naive-bayes.html"><a href="model-4-naive-bayes.html"><i class="fa fa-check"></i><b>6</b> Model 4: Naive Bayes</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="model-4-naive-bayes.html"><a href="model-4-naive-bayes.html#naive-bayes-model"><i class="fa fa-check"></i><b>6.1</b> Naive Bayes Model</a></li>
+<li class="chapter" data-level="6.2" data-path="model-4-naive-bayes.html"><a href="model-4-naive-bayes.html#lime-analysis"><i class="fa fa-check"></i><b>6.2</b> LIME Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="reflections.html"><a href="reflections.html"><i class="fa fa-check"></i><b>7</b> Reflections</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="reflections.html"><a href="reflections.html#model-conclusions"><i class="fa fa-check"></i><b>7.1</b> Model Conclusions</a></li>
+<li class="chapter" data-level="7.2" data-path="reflections.html"><a href="reflections.html#final-thoughts"><i class="fa fa-check"></i><b>7.2</b> Final Thoughts</a></li>
+<li class="chapter" data-level="7.3" data-path="reflections.html"><a href="reflections.html#references"><i class="fa fa-check"></i><b>7.3</b> References</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">NYC Yellow Taxi Tipping Patterns</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="exploration" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Exploration<a href="exploration.html#exploration" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="data-wrangling" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Data Wrangling<a href="exploration.html#data-wrangling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>My goal is to look into the factors that determine how people tip. To do this, I want to create a “tipped” column that is just a binary of whether or not somebody tipped at all. I also want to create a “tip” column that shows whether or not somebody tipped over 15% of the fare amount.</p>
+<pre><code>##                     X              VendorID  tpep_pickup_datetime 
+##                     0                   132                     0 
+## tpep_dropoff_datetime       passenger_count         trip_distance 
+##                     0                   231                     0 
+##            RatecodeID    store_and_fwd_flag          PULocationID 
+##                   231                     0                     0 
+##          DOLocationID          payment_type           fare_amount 
+##                     0                   132                     0 
+##                 extra               mta_tax            tip_amount 
+##                     0                     0                     0 
+##          tolls_amount improvement_surcharge          total_amount 
+##                     0                     0                     0 
+##  congestion_surcharge 
+##                    99</code></pre>
+<p>To understand the columns and what the values mean, I used this site:
+<a href="https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf" class="uri">https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf</a></p>
+<p>It seems that most columns don’t have NAs. The ones that do are passenger_count, VendorID, RatecodeID, payment_type, and congestion_surcharge.</p>
+<ul>
+<li>Passenger_count: just remove the rows that don’t have this value</li>
+<li>VendorID: replace NA with 0 to represent unknown</li>
+<li>RatecodeID: not sure</li>
+<li>payment_type: replace all NA with code 5 (unknown)</li>
+<li>congestion_surcharge: not sure</li>
+</ul>
+<pre><code>##                     X              VendorID  tpep_pickup_datetime 
+##                     0                     0                     0 
+## tpep_dropoff_datetime       passenger_count         trip_distance 
+##                     0                   231                     0 
+##            RatecodeID    store_and_fwd_flag          PULocationID 
+##                   231                     0                     0 
+##          DOLocationID          payment_type           fare_amount 
+##                     0                     0                     0 
+##                 extra               mta_tax            tip_amount 
+##                     0                     0                     0 
+##          tolls_amount improvement_surcharge          total_amount 
+##                     0                     0                     0 
+##  congestion_surcharge 
+##                    99</code></pre>
+<p>For some reason, removing all rows with passenger_count NA removes all other NA instances. This is good!</p>
+<pre><code>## [1] 0.2672</code></pre>
+<pre><code>## [1] 4999   20</code></pre>
+<pre><code>## [1] 0.3516703</code></pre>
+<p>As we can see, of the sampled data, 27.1% of rides were NOT tipped and 29.6% of rides were tipped under 10% (including not tipped at all).</p>
+<p>Next, I want to get a general sense of the distribution of tip amounts and the distribution of fare amounts.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>This is odd- there seem to be some rides where the fare amount is negative (the taxi driver owes the passenger the fare amount). I did some research and attributed this to messy data, so I removed the negative fares and redid the histogram.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>We see that most fares seem to be around $5-20. I’d like to make a categorical variable for rides over and under $20.</p>
+<pre><code>## [1] 0.1622057</code></pre>
+<p>So around 14.4% of all rides are over $20.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>We see a spike at 0 representing the proportion of rides that weren’t tipped at all. Generally, we see that most rides are tipped between the $0-5 range.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>We see a spike at 0 representing the proportion of rides that aren’t tipped at all. We also see a spike around 25-30% tip.</p>
+<p>Next, I want to see how long these rides last. To do that, I need to first convert the pickup/dropoff times to time variables, and find the difference.</p>
+<p>In my exploration of the data, there were some values that seemed like outliers (rides that took multiple hours). I removed 11 of these rows from the data set.</p>
+<p>Next, I want to create a categorical variable for the season in which the ride took place based on the pickup time. To do this, I looked into this package: hydroTSM. Maybe the season in which the ride took place will impact the amount riders tip!</p>
+<p>Finally, I would like to create a categorical variable that takes into account the pickup and dropoff locations. I don’t want it to be too granular, so I’m using the “pulocationID” and “dolocationID” columns. Just looking at the numbers, they don’t mean anything so I looked into what the IDs mean. I found this dataset: <a href="https://catalog.data.gov/dataset/nyc-taxi-zones" class="uri">https://catalog.data.gov/dataset/nyc-taxi-zones</a> and named it pickup_ids in my code. I cross-referenced the “borough” column of pickup_ids to figure out the borough each pickup ID corresponds to.</p>
+<p>This link was also helpful. <a href="https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf" class="uri">https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf</a></p>
+<pre><code>## pickup_borough
+##     Bronx  Brooklyn Manhattan    Queens   unknown 
+##        19        57      4499       328        55</code></pre>
+<pre><code>## dropoff_borough
+##         Bronx      Brooklyn           EWR     Manhattan        Queens 
+##            47           215             8          4400           249 
+## Staten Island       unknown 
+##             1            38</code></pre>
+</div>
+<div id="data-visualization" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Data Visualization<a href="exploration.html#data-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s look at the relative frequencies of the passenger count.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>For the most part, we have rides with only 1 passenger, followed by 2. What’s surprising to me is that there are rides with 5-6 passengers at all; over covid, I remember that most taxis only allowed 1-3 passengers to ride but maybe by late 2021 they lifted the restrictions.</p>
+<pre><code>## 
+##    0    1    2    3    4    5    6 
+##  107 3433  773  175   76   91   72</code></pre>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>This is interesting- there doesn’t seem to be much of a trend in passenger count vs tip percentage.</p>
+<pre><code>## pickup_borough
+##     Bronx  Brooklyn Manhattan    Queens   unknown 
+##        19        57      4499       328        55</code></pre>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>At this point in my iterations, I’ve created all the new categorical variables I’d like to create for my data analysis.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="model-1-oner.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vliu5163/final-project-2023/edit/main/exploration.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/vliu5163/final-project-2023/blob/main/exploration.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

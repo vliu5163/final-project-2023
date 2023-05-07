@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Reflections | NYC Yellow Taxi Tipping Patterns</title>
-  <meta name="description" content="Chapter 7 Reflections | NYC Yellow Taxi Tipping Patterns" />
+  <title>Chapter 6 Model 4: Naive Bayes | NYC Yellow Taxi Tipping Patterns</title>
+  <meta name="description" content="Chapter 6 Model 4: Naive Bayes | NYC Yellow Taxi Tipping Patterns" />
   <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Reflections | NYC Yellow Taxi Tipping Patterns" />
+  <meta property="og:title" content="Chapter 6 Model 4: Naive Bayes | NYC Yellow Taxi Tipping Patterns" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Reflections | NYC Yellow Taxi Tipping Patterns" />
+  <meta name="twitter:title" content="Chapter 6 Model 4: Naive Bayes | NYC Yellow Taxi Tipping Patterns" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="model-4-naive-bayes.html"/>
-
+<link rel="prev" href="model-3-random-forest.html"/>
+<link rel="next" href="reflections.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -136,36 +136,57 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="reflections" class="section level1 hasAnchor" number="7">
-<h1><span class="header-section-number">Chapter 7</span> Reflections<a href="reflections.html#reflections" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="model-conclusions" class="section level2 hasAnchor" number="7.1">
-<h2><span class="header-section-number">7.1</span> Model Conclusions<a href="reflections.html#model-conclusions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This was a very fun dataset to work with! It required quite a bit of cleaning and data wrangling in the beginning, but I got to create some fun columns that hopefully made the data easier to understand for someone new to the dataset. Some of the columns that I created included season (looking at the date the ride occured), pickup/dropoff_borough (cross-referenceing the taxi zone with its borough), and high_fare (is the fare over $20).</p>
-<p>At the end of each model I created, I also looked into the sensitivity and specificity values so I could get another metric that I could compare different models against each other. Here, I’ve summarized the overall accuracy/sensitivity/specificity values.</p>
-<ul>
-<li>OneR: 0.8826638 / 0.6210191 / 1</li>
-<li>Decision Tree: 0.8837209 / 0.6697248 / 0.9983845</li>
-<li>Random Forest: 0.8868922 / 0.6727829 / 1</li>
-<li>Naive Bayes: 0.8879493 / 0.6788991 / 0.9983845</li>
-</ul>
-<p>In terms of model interpretability, I found that OneR and DecisionTree yielded the lowest accuracies (not by far at all), but were the easiest to interpret. On the other hand, RandomForest and Naive Bayes did very slightly better, but was harder to interpret the results. Although OneR and DecisionTree didn’t do as well, I felt it was necessary to understand all of the models so I could get a holistic understanding of the important predictors of the data.</p>
+<div id="model-4-naive-bayes" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Model 4: Naive Bayes<a href="model-4-naive-bayes.html#model-4-naive-bayes" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="naive-bayes-model" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Naive Bayes Model<a href="model-4-naive-bayes.html#naive-bayes-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For my final model, I wanted to see how Naive Bayes would work. It seems like a pretty simple predictive model, so I wanted to see how it may compare to my other models. For this model, I’ll just produce the model with the same features I’ve been using so far and get the accuracy, sensitivity, and specificity.</p>
+<pre><code>##            
+## nb_mod_pred   0   1
+##           0 222   1
+##           1 105 618</code></pre>
+<pre><code>## [1] &quot;Overall accuracy:&quot;</code></pre>
+<pre><code>## [1] 0.8879493</code></pre>
+<pre><code>## [1] &quot;Test sensitivity and specificity:&quot;</code></pre>
+<pre><code>## [1] 0.6788991</code></pre>
+<pre><code>## [1] 0.9983845</code></pre>
+<p>Interesting- this is the highest accuracy we’ve seen so far.</p>
 </div>
-<div id="final-thoughts" class="section level2 hasAnchor" number="7.2">
-<h2><span class="header-section-number">7.2</span> Final Thoughts<a href="reflections.html#final-thoughts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Overall, the models that I created worked alright to predict whether or not someone would tip over 15% or not. For all the models, I had an accuracy of around 88% that I wasn’t able to make higher despite trying different combinations of features and adding features. There may be a few reasons for this, but I think the most important of the reasons was that the data did not actually give us an good information about the rider. Some information such as demographics, maybe yearly income, even personality were obviously not included for each ride, and these predictors may have been very helpful in predicting our outcome variable. Instead, we got information such as VendorID (one of 2 taxi companies represented in the data), whether or not the ride was on a tolled path, and the time at which it occurred. The closest approximation for demographic information might have been dropoff_borough, as the boroughs can be ranked on median income. dropoff_borough also happened to be an important predictor across the board for all of the models.</p>
-<p>Another thing that was interesting was that when I tried using the original PU/DOLocationID columns in the models instead, the accuracy didn’t go up even though the pickup/dropoff location information was more granular. The computation time went way up (since we went from 5 borough categories to around 200 taxi zone categories), but the accuracy didn’t change much.</p>
-<p>The data is probably very good for someone looking to start their own taxi company and wanting to look at trends in where/when rides occur, but in terms of predicting tipping pattern, the companies would need to start collecting demographic information about each ride which is quite impractical. Based on my analysis, my recommendation for taxi drivers in NYC is to encourage their riders to pay using card as often as possible!</p>
-</div>
-<div id="references" class="section level2 hasAnchor" number="7.3">
-<h2><span class="header-section-number">7.3</span> References<a href="reflections.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Here are a list of sources that I used to help me with my code and data interpretation:</p>
-<p><a href="https://cran.r-project.org/web/packages/hydroTSM/index.html" class="uri">https://cran.r-project.org/web/packages/hydroTSM/index.html</a>
-<a href="https://stackoverflow.com/questions/20328452/legend-for-random-forest-plot-in-r" class="uri">https://stackoverflow.com/questions/20328452/legend-for-random-forest-plot-in-r</a>
-<a href="https://stat.ethz.ch/R-manual/R-devel/library/rpart/html/predict.rpart.html" class="uri">https://stat.ethz.ch/R-manual/R-devel/library/rpart/html/predict.rpart.html</a>
-<a href="http://www.sthda.com/english/articles/35-statistical-machine-learning-essentials/141-cart-model-decision-tree-essentials/#" class="uri">http://www.sthda.com/english/articles/35-statistical-machine-learning-essentials/141-cart-model-decision-tree-essentials/#</a>:~:text=In%20rpart%20package%2C%20this%20is,to%20a%20too%20small%20tree.
-<a href="https://statinfer.com/203-4-2-calculating-sensitivity-and-specificity-in-r/" class="uri">https://statinfer.com/203-4-2-calculating-sensitivity-and-specificity-in-r/</a>
-<a href="https://algotech.netlify.app/blog/text-lime/" class="uri">https://algotech.netlify.app/blog/text-lime/</a></p>
-<p>An Introduction to Statistical Learning (James, Witten, Hastie, Tibshirani) pg. 342-343</p>
+<div id="lime-analysis" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> LIME Analysis<a href="model-4-naive-bayes.html#lime-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>LIME: Local Interpretable Model-agnostic Explanations. This fits a local model around a specific observation to explain why a black-box model (such as Naive Bayes) made the decision it did in classification. We’d like to look at a couple observations and look at the LIME visualization to get a deeper sense of how Naive Bayes worked behind the scenes.</p>
+<pre><code>##       X.1        X VendorID   tpep_pickup_datetime  tpep_dropoff_datetime
+## 2749 2772  5929665        2 04/20/2021 01:56:04 PM 04/20/2021 02:04:23 PM
+## 3416 3445  1119779        2 01/28/2021 12:20:59 PM 01/28/2021 12:24:36 PM
+## 3055 3079 19984670        1 09/24/2021 07:04:25 PM 09/24/2021 07:37:20 PM
+## 4479 4517 23187957        1 10/23/2021 06:42:01 PM 10/23/2021 06:56:07 PM
+##      passenger_count trip_distance RatecodeID store_and_fwd_flag PULocationID
+## 2749               1          1.42          1                  N          143
+## 3416               1          0.51          1                  N          233
+## 3055               1          5.20          1                  N          224
+## 4479               0          0.00          1                  N          170
+##      DOLocationID payment_type fare_amount extra mta_tax tip_amount
+## 2749          238            1         7.5   0.0     0.5       2.16
+## 3416          161            2         4.5   0.0     0.5       0.00
+## 3055          181            1        23.0   3.5     0.5       5.45
+## 4479          141            2         7.0   2.5     0.5       0.00
+##      tolls_amount improvement_surcharge total_amount congestion_surcharge
+## 2749            0                   0.3        12.96                  2.5
+## 3416            0                   0.3         7.80                  2.5
+## 3055            0                   0.3        32.75                  2.5
+## 4479            0                   0.3        10.30                  2.5
+##      tipped tip_percent tip high_fare              pickup             dropoff
+## 2749      1   0.2880000   1         0 2021-04-20 13:56:04 2021-04-20 14:04:23
+## 3416      0   0.0000000   0         0 2021-01-28 12:20:59 2021-01-28 12:24:36
+## 3055      1   0.2369565   1         1 2021-09-24 19:04:25 2021-09-24 19:37:20
+## 4479      0   0.0000000   0         0 2021-10-23 18:42:01 2021-10-23 18:56:07
+##       duration season pickup_borough dropoff_borough
+## 2749  8.316667 spring      Manhattan       Manhattan
+## 3416  3.616667 winter      Manhattan       Manhattan
+## 3055 32.916667 autumm      Manhattan        Brooklyn
+## 4479 14.100000 autumm      Manhattan       Manhattan</code></pre>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
+<p>It seems that the top 4 feautures that contributed to the classification are payment_type, dropoff_borough, pickup_borough, and high_fare. Payment type is by far the most supportive of the classification type. Again, this is in line with what I discovered from my previous 3 models. In 3 of the 4 cases, the payment type is 1 (credit card), strongly supporting the classification 1 of the observation. In the 1 case in which the payment type is 2 (cash), it also strongly supports the classification of 0. In all 4 cases, the dropoff_borough is Manhattan. In the 3 cases in which the observation is classified as 1, this is supporting the classification, but in the one case in which the observation is classified as 0, this contradicts the classification. This supports the generalization that riders being dropped off in Manhattan tend to tip over 15%.</p>
 
 </div>
 </div>
@@ -174,8 +195,8 @@
           </div>
         </div>
       </div>
-<a href="model-4-naive-bayes.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="model-3-random-forest.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="reflections.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -206,7 +227,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/vliu5163/final-project-2023/edit/main/reflections.Rmd",
+"link": "https://github.com/vliu5163/final-project-2023/edit/main/model4.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -214,7 +235,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/vliu5163/final-project-2023/blob/main/reflections.Rmd",
+"link": "https://github.com/vliu5163/final-project-2023/blob/main/model4.Rmd",
 "text": null
 },
 "download": null,

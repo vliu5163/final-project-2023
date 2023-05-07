@@ -1,4 +1,4 @@
-# [Model 3: Random Forest]
+# Model 3: Random Forest
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = TRUE, echo = FALSE)
